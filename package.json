@@ -1,0 +1,37 @@
+{
+  "name": "@adevien/svelte-scaffold",
+  "version": "1.0.0",
+  "description": "Scaffold a monorepo to collect projects of a new client",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adevien-solutions/svelte-scaffold.git"
+  },
+  "keywords": [
+    "svelte",
+    "monorepo"
+  ],
+  "author": "adam-kov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adevien-solutions/svelte-scaffold/issues"
+  },
+  "homepage": "https://github.com/adevien-solutions/svelte-scaffold#readme",
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "commander": "^10.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
+    "eslint": "^8.40.0",
+    "eslint-config-prettier": "^8.8.0",
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4"
+  }
+}
