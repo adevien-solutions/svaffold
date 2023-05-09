@@ -12,10 +12,11 @@ program
 	.usage('npx @adevien/svelte-scaffold [options]')
 	.description('Monorepo scaffolding for Svelte and TypeScript projects')
 	.argument('[directory]', 'Directory to create the project in')
+	.option('--force', 'Overwrite existing files', false)
 	.parse(process.argv);
 
 const dir = program.args[0] || './';
-const settings = await getSettings();
+const settings = await getSettings(program.opts());
 await createRoot(dir, settings);
 
 console.log(settings);

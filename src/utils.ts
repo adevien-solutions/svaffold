@@ -1,15 +1,17 @@
 import inquirer from 'inquirer';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { Archetype, otherApps, Settings, svelteApps } from './types.js';
+import { getPackageJsonContent } from './files/package.json.js';
+import chalk from 'chalk';
 
-export async function getSettings(): Promise<Settings> {
+export async function getSettings(options: Settings['options']): Promise<Settings> {
 	const answers = await inquirer.prompt<Settings>([
 		{
 			name: 'client',
 			type: 'input',
 			message: 'Client name',
 			suffix: ' (only letters, dashes, and underscores)',
-			validate: (input: string) => {
+			validate: (input: string): boolean => {
 				return /^[a-z_-]+$/i.test(input);
 			}
 		},
@@ -39,7 +41,7 @@ export async function getSettings(): Promise<Settings> {
 					value: 'none'
 				}
 			],
-			when: ({ archetypes }: { archetypes: string[] }) => {
+			when: ({ archetypes }: { archetypes: string[] }): boolean => {
 				return svelteApps.some((app) => archetypes.includes(app.value));
 			}
 		},
@@ -66,7 +68,7 @@ export async function getSettings(): Promise<Settings> {
 					value: 'docker'
 				}
 			],
-			when: ({ archetypes }: { archetypes: string[] }) => {
+			when: ({ archetypes }: { archetypes: string[] }): boolean => {
 				return svelteApps.some((app) => archetypes.includes(app.value));
 			}
 		},
@@ -90,7 +92,7 @@ export async function getSettings(): Promise<Settings> {
 				// 	value: 'storyblok'
 				// }
 			],
-			when: ({ archetypes }: { archetypes: string[] }) => {
+			when: ({ archetypes }: { archetypes: string[] }): boolean => {
 				return archetypes.includes(Archetype.cms);
 			}
 		},
@@ -118,17 +120,29 @@ export async function getSettings(): Promise<Settings> {
 				// 	value: 'cloudflare'
 				// },
 			],
-			when: ({ archetypes }: { archetypes: string[] }) => {
-				return archetypes.includes(Archetype.asset);
+			when: ({ archetypes }: { archetypes: string[] }): boolean => {
+				return archetypes.includes(Archetype.assets);
 			}
 		}
 	]);
 
-	return answers;
+	return { ...answers, options };
 }
 
-export async function createRoot(dir: string, settings: Settings) {
+export function createRoot(dir: string, settings: Settings): void {
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
-	console.log(settings);
+	checkAndWriteFile('package.json', getPackageJsonContent(settings), settings.options.force);
+}
+
+function checkAndWriteFile(path: string, content: string, force: boolean): void {
+	if (!force && existsSync(path)) {
+		const highlight = chalk.green(path);
+		const force = chalk.yellow('--force');
+		console.log(
+			`Skipping ${highlight} as it already exists. Use ${force} to overwrite existing files.`
+		);
+	} else {
+		writeFileSync(path, content);
+	}
 }
