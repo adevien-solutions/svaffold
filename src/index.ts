@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 import { Command } from 'commander';
+import chalk from 'chalk';
 import { readFileSync } from 'fs';
 import { createRoot, getSettings } from './utils.js';
 
@@ -10,9 +11,15 @@ const versionNumber = readFileSync('version.txt', 'utf8');
 program
 	.version(versionNumber)
 	.usage('npx @adevien/svelte-scaffold [options]')
-	.description('Monorepo scaffolding for Svelte and TypeScript projects')
-	.argument('[directory]', 'Directory to create the project in')
-	.option('--force', 'Overwrite existing files', false)
+	.description(
+		chalk.bold(
+			`Monorepo scaffolding for ${chalk.hex('#ff3e00')('Svelte')} and ${chalk.hex('#2f73bf')(
+				'TypeScript'
+			)} projects`
+		)
+	)
+	.argument('[directory]', 'directory to create the project in')
+	.option('--force', 'overwrite existing files', false)
 	.parse(process.argv);
 
 const dir = program.args[0] || './';
