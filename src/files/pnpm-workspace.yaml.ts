@@ -1,4 +1,4 @@
-import { Archetype, Settings } from '../types.js';
+import { Archetype, Settings } from '../types';
 
 export function getPnpmWorkspaceYamlContent(settings: Settings): string {
 	const hasProjects = settings.archetypes.filter((type) => type !== Archetype.lib).length > 0;

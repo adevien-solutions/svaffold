@@ -1,4 +1,4 @@
-import { Archetypes, Archetype } from './types.js';
+import { Archetypes, Archetype } from './types';
 
 export const CHOICES = {
 	designSystem: [

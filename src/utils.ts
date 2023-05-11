@@ -1,8 +1,9 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { Archetype, Settings } from './types.js';
-import { svelteApps, otherApps, CHOICES } from './constants.js';
+import { fork } from 'child_process';
+import { Archetype, Settings } from './types';
+import { svelteApps, otherApps, CHOICES } from './constants';
 import {
 	getDockerfileContent,
 	getGitignoreContent,
@@ -12,9 +13,8 @@ import {
 	getPrettierrcContent,
 	getReadmeMdContent,
 	getTurboJsonContent
-} from './files/index.js';
-import { fork } from 'child_process';
-import { Announcer } from './announcer.js';
+} from './files/index';
+import { Announcer } from './announcer';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
 	const answers = await inquirer.prompt<Settings>([

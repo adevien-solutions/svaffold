@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { readFileSync } from 'fs';
-import { getSettings, createFiles, installDependencies, initializeGit } from './utils.js';
+import { getSettings, createFiles, installDependencies, initializeGit } from './utils';
 import path from 'path';
 
 const program = new Command();

@@ -1,4 +1,4 @@
-import { CHOICES, SCRIPT_TYPES } from './constants.js';
+import { CHOICES, SCRIPT_TYPES } from './constants';
 
 export enum Archetype {
 	landing = 'landing',
