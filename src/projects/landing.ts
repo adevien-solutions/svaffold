@@ -2,7 +2,7 @@ import path from 'path';
 import { argv } from 'process';
 import { existsSync, mkdirSync } from 'fs';
 import { create } from 'create-svelte';
-import { Archetype, Settings } from '../types';
+import { Archetype, Settings } from '../types.js';
 
 export async function createLandingProject(dir: string, settings: Settings): Promise<void> {
 	dir = path.join(process.cwd(), dir, `projects/${Archetype.landing}`);
