@@ -11,6 +11,12 @@ The following assumptions are made:
 - All projects are using _TypeScript_
 - All web projects are using _SvelteKit_ and _TailwindCSS_
 
+## Requirements
+
+- node.js >= 14
+- pnpm >= 7
+- git
+
 ## Usage
 
 ```bash
