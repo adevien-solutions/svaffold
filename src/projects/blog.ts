@@ -1,7 +1,7 @@
 import path from 'path';
 import { argv } from 'process';
 import { existsSync, mkdirSync } from 'fs';
-import { Archetype, Settings } from '../types';
+import { Archetype, Settings } from '../types.js';
 
 export async function createBlogProject(dir: string, settings: Settings): Promise<void> {
 	dir = path.join(process.cwd(), dir, `projects/${Archetype.blog}`);

@@ -1,5 +1,5 @@
-import { Settings } from '../types';
-import { isSharedType } from '../utils';
+import { Settings } from '../types.js';
+import { isSharedType } from '../utils.js';
 
 export function getReadmeMdContent(settings: Settings): string {
 	return `# @${settings.client}/monorepo
