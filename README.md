@@ -20,7 +20,7 @@ The following assumptions are made:
 ## Usage
 
 ```bash
-npx run @adevien/svelte-scaffold
+npx run @adevien/svelte-scaffold root-dir
 ```
 
 ## Contributing
