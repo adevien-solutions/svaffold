@@ -122,22 +122,6 @@ function createProjects(types: Archetype[], dir: string, settings: Settings): Pr
 			proc.once('exit', resolve);
 		});
 	});
-	// const root = process.cwd();
-	// const dir = (isSharedType(type) ? './shared/' : './projects/') + type;
-	// existsSync(dir) || mkdirSync(dir, { recursive: true });
-	// process.chdir(dir);
-	// const projects: Record<Archetype, () => Promise<void>> = {
-	// 	landing: () => createLandingProject(settings),
-	// 	blog: () => createBlogProject(settings),
-	// 	app: () => createAppProject(settings),
-	// 	lib: () => createLibProject(settings),
-	// 	cms: () => createCmsProject(settings),
-	// 	assets: () => createAssetsProject(settings),
-	// 	cli: () => createCliProject(settings),
-	// 	config: () => createConfigProject(settings)
-	// };
-	// await projects[type]();
-	// process.chdir(root);
 }
 
 export function trimDirectory(dir: string): string {

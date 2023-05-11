@@ -21,12 +21,6 @@ export function getPackageJsonContent(settings: Settings): string {
 				const scriptString = `"${script}:${type}": "${getScriptString(script, settings, type)}",`;
 				general += general ? `\n\t\t${scriptString}` : scriptString;
 			});
-			// let general = `\t\t"${script}": "turbo run ${script} --parallel --filter=!@${client}/lib --filter=!@${client}/config",`;
-			// typeScripts.forEach((type) => {
-			// 	general += `\n\t\t"${script}:${type}": "turbo run ${script}${
-			// 		hasAssets ? ` --parallel --filter=@${client}/${Archetype.assets}` : ''
-			// 	} --filter=@${client}/${type}",`;
-			// });
 			return general;
 		})
 			.filter(Boolean)
