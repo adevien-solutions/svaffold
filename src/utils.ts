@@ -4,10 +4,14 @@ import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { Archetype, Settings } from './types.js';
 import { svelteApps, otherApps, CHOICES } from './constants.js';
 import {
+	getDockerfileContent,
 	getGitignoreContent,
 	getPackageJsonContent,
 	getPnpmWorkspaceYamlContent,
-	getPrettierignoreContent
+	getPrettierignoreContent,
+	getPrettierrcContent,
+	getReadmeMdContent,
+	getTurboJsonContent
 } from './files/index.js';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
@@ -80,7 +84,7 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 		}
 	]);
 
-	return { ...answers, options };
+	return { ...answers, archetypes: [...answers.archetypes, Archetype.config], options };
 }
 
 export function createFiles(dir: string, settings: Settings): void {
@@ -88,14 +92,18 @@ export function createFiles(dir: string, settings: Settings): void {
 	createRoot(dir, settings);
 }
 
-export function createRoot(dir: string, settings: Settings): void {
+function createRoot(dir: string, settings: Settings): void {
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
 	const files = {
+		'.gitignore': getGitignoreContent(),
+		'.prettierignore': getPrettierignoreContent(),
+		'.prettierrc': getPrettierrcContent(),
+		Dockerfile: getDockerfileContent(),
 		'package.json': getPackageJsonContent(settings),
 		'pnpm-workspace.yaml': getPnpmWorkspaceYamlContent(settings),
-		'.gitignore': getGitignoreContent(),
-		'.prettierignore': getPrettierignoreContent()
+		'README.md': getReadmeMdContent(settings),
+		'turbo.json': getTurboJsonContent()
 	};
 	Object.entries(files).forEach(([path, content]) =>
 		checkAndWriteFile(path, content, settings.options.force)
@@ -113,9 +121,17 @@ function checkAndWriteFile(path: string, content: string, force: boolean): void 
 		writeFileSync(path, content);
 	}
 }
-export function installDependencies(dir: string, settings: Settings): void {
+
+export async function installDependencies(dir: string, settings: Settings): Promise<void> {
 	announce('2. Installing dependencies');
-	createRoot(dir, settings);
+}
+
+export async function initializeGit(dir: string, settings: Settings): Promise<void> {
+	announce('3. Initializing git');
+}
+
+export function isSharedType(type: Archetype): boolean {
+	return type === Archetype.config || type === Archetype.lib;
 }
 
 function announce(text: string): void {

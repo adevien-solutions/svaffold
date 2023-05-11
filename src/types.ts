@@ -7,7 +7,8 @@ export enum Archetype {
 	lib = 'lib',
 	cms = 'cms',
 	assets = 'assets',
-	cli = 'cli'
+	cli = 'cli',
+	config = 'config'
 }
 
 export type Archetypes = Readonly<

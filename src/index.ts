@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { readFileSync } from 'fs';
-import { getSettings, createFiles } from './utils.js';
+import { getSettings, createFiles, installDependencies, initializeGit } from './utils.js';
 
 const program = new Command();
 const versionNumber = readFileSync('version.txt', 'utf8');
@@ -25,5 +25,7 @@ program
 const dir = program.args[0] || './';
 const settings = await getSettings(program.opts());
 createFiles(dir, settings);
+await installDependencies(dir, settings);
+await initializeGit(dir, settings);
 
 console.log(settings);
