@@ -1,22 +1,5 @@
 #! /usr/bin/env node
 
-// import { fork } from 'child_process';
-
-// const promise = new Promise<void>((resolve) => {
-// 	let counter = 0;
-// 	const p1 = fork('./dist/proc.js', [JSON.stringify({ id: 1 })], { detached: true });
-// 	p1.once('exit', () => {
-// 		console.log('exit ' + 1);
-// 		counter === 0 ? counter++ : resolve();
-// 	});
-// 	const p2 = fork('./dist/proc.js', [JSON.stringify({ id: 2 })]);
-// 	p2.once('exit', () => {
-// 		console.log('exit ' + 2);
-// 		counter === 0 ? counter++ : resolve();
-// 	});
-// });
-// await promise;
-// console.log('done');
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { readFileSync } from 'fs';
