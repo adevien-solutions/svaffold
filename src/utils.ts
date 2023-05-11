@@ -1,8 +1,14 @@
 import inquirer from 'inquirer';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { Archetype, otherApps, Settings, svelteApps } from './types.js';
-import { getPackageJsonContent } from './files/package.json.js';
 import chalk from 'chalk';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { Archetype, Settings } from './types.js';
+import { svelteApps, otherApps, CHOICES } from './constants.js';
+import {
+	getGitignoreContent,
+	getPackageJsonContent,
+	getPnpmWorkspaceYamlContent,
+	getPrettierignoreContent
+} from './files/index.js';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
 	const answers = await inquirer.prompt<Settings>([
@@ -27,22 +33,19 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 			message: 'Select a design system',
 			suffix: ' (Tailwind will be installed)',
 			default: 'daisy',
-			choices: [
-				{
-					name: 'DaisyUI',
-					value: 'daisy'
-				},
-				{
-					name: 'SkeletonUI',
-					value: 'skeleton'
-				},
-				{
-					name: 'None',
-					value: 'none'
-				}
-			],
+			choices: CHOICES.designSystem,
 			when: ({ archetypes }: { archetypes: string[] }): boolean => {
 				return svelteApps.some((app) => archetypes.includes(app.value));
+			}
+		},
+		{
+			name: 'libBuilder',
+			type: 'list',
+			message: 'Select a component library builder',
+			default: 'storybook',
+			choices: CHOICES.libBuilder,
+			when: ({ archetypes }: { archetypes: string[] }): boolean => {
+				return archetypes.includes(Archetype.lib);
 			}
 		},
 		{
@@ -50,24 +53,7 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 			type: 'list',
 			message: 'Select deployment platform for Svelte apps',
 			default: 'auto',
-			choices: [
-				{
-					name: 'Auto',
-					value: 'auto'
-				},
-				{
-					name: 'Cloudflare',
-					value: 'cloudflare'
-				},
-				{
-					name: 'Vercel',
-					value: 'vercel'
-				},
-				{
-					name: 'Docker (Node.js)',
-					value: 'docker'
-				}
-			],
+			choices: CHOICES.svelteDeploy,
 			when: ({ archetypes }: { archetypes: string[] }): boolean => {
 				return svelteApps.some((app) => archetypes.includes(app.value));
 			}
@@ -77,21 +63,7 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 			type: 'list',
 			message: 'Select a CMS',
 			default: 'payload',
-			choices: [
-				{
-					name: 'Payload',
-					value: 'payload'
-				}
-				// TODO
-				// {
-				// 	name: 'Sanity',
-				// 	value: 'sanity'
-				// },
-				// {
-				// 	name: 'Storyblok',
-				// 	value: 'storyblok'
-				// }
-			],
+			choices: CHOICES.cms,
 			when: ({ archetypes }: { archetypes: string[] }): boolean => {
 				return archetypes.includes(Archetype.cms);
 			}
@@ -101,25 +73,7 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 			type: 'list',
 			message: 'Select deployment platform for the Asset server',
 			default: 'gcp',
-			choices: [
-				{
-					name: 'None',
-					value: 'none'
-				},
-				{
-					name: 'GCP Cloud Storage',
-					value: 'gcp'
-				}
-				// TODO
-				// {
-				// 	name: 'AWS S3',
-				// 	value: 'aws'
-				// },
-				// {
-				// 	name: 'Cloudflare R2',
-				// 	value: 'cloudflare'
-				// },
-			],
+			choices: CHOICES.assetDeploy,
 			when: ({ archetypes }: { archetypes: string[] }): boolean => {
 				return archetypes.includes(Archetype.assets);
 			}
@@ -129,10 +83,23 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 	return { ...answers, options };
 }
 
+export function createFiles(dir: string, settings: Settings): void {
+	announce('1. Creating files');
+	createRoot(dir, settings);
+}
+
 export function createRoot(dir: string, settings: Settings): void {
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
-	checkAndWriteFile('package.json', getPackageJsonContent(settings), settings.options.force);
+	const files = {
+		'package.json': getPackageJsonContent(settings),
+		'pnpm-workspace.yaml': getPnpmWorkspaceYamlContent(settings),
+		'.gitignore': getGitignoreContent(),
+		'.prettierignore': getPrettierignoreContent()
+	};
+	Object.entries(files).forEach(([path, content]) =>
+		checkAndWriteFile(path, content, settings.options.force)
+	);
 }
 
 function checkAndWriteFile(path: string, content: string, force: boolean): void {
@@ -145,4 +112,12 @@ function checkAndWriteFile(path: string, content: string, force: boolean): void 
 	} else {
 		writeFileSync(path, content);
 	}
+}
+export function installDependencies(dir: string, settings: Settings): void {
+	announce('2. Installing dependencies');
+	createRoot(dir, settings);
+}
+
+function announce(text: string): void {
+	console.log(chalk.blue.bold(text));
 }
