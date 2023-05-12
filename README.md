@@ -24,4 +24,18 @@ The following assumptions are made:
 npx run @adevien/svelte-scaffold root-dir
 ```
 
+**Arguments:**
+
+| Name      | Description          |
+| --------- | -------------------- |
+| directory | root of the monorepo |
+
+**Options:**
+
+| Option            | Description                                 |
+| ----------------- | ------------------------------------------- |
+| `--force`         | overwrite existing files (default: `false`) |
+| `-h`, `--help`    | display help for command                    |
+| `-V`, `--version` | output the version number                   |
+
 ## Contributing

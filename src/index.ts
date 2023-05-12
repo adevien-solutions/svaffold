@@ -19,7 +19,7 @@ program
 			)} projects`
 		)
 	)
-	.argument('<directory>', 'directory to create the project in')
+	.argument('<directory>', 'root of the monorepo')
 	.option('--force', 'overwrite existing files', false)
 	.parse(process.argv);
 
