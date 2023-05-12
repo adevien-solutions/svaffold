@@ -14,7 +14,7 @@ import {
 	getTurboJsonContent
 } from './files/index.js';
 import { Settings } from './types.js';
-import { isSharedType, isSvelteType } from './utils.js';
+import { isSvelteType } from './utils.js';
 
 export class Generator {
 	/** Root where the CLI got called */
@@ -33,6 +33,7 @@ export class Generator {
 		await this._createFiles();
 		await this._installDependencies();
 		await this._initializeGit();
+		Announcer.stopSpinner();
 		return this;
 	}
 

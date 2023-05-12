@@ -25,9 +25,11 @@
 	"homepage": "https://github.com/adevien-solutions/svelte-scaffold#readme",
 	"dependencies": {
 		"chalk": "^5.2.0",
+		"cli-spinners": "^2.9.0",
 		"commander": "^10.0.1",
 		"create-svelte": "^4.2.0",
 		"inquirer": "^9.2.2",
+		"ora": "^6.3.0",
 		"svelte-add": "^2023.5.4-0.0"
 	},
 	"devDependencies": {
