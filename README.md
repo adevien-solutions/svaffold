@@ -10,6 +10,7 @@ The following assumptions are made:
 - The package manager is _pnpm_
 - All projects are using _TypeScript_
 - All web projects are using _SvelteKit_ and _TailwindCSS_
+- If no design system was selected, the _forms_ and _typography_ Tailwind plugins will be installed
 
 ## Requirements
 

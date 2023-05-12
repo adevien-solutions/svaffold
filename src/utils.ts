@@ -1,6 +1,7 @@
 import inquirer from 'inquirer';
 import { Archetype, Settings } from './types.js';
 import { svelteApps, otherApps, CHOICES } from './constants.js';
+import { readFileSync, writeFileSync } from 'fs';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
 	const answers = await inquirer.prompt<Settings>([
@@ -75,6 +76,15 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 	return { ...answers, archetypes: [...answers.archetypes, Archetype.config], options };
 }
 
+export function isSvelteType(type: Archetype): boolean {
+	return svelteApps.find((app) => app.value === type) !== undefined;
+}
+
 export function isSharedType(type: Archetype): boolean {
 	return type === Archetype.config || type === Archetype.lib;
+}
+
+export function replaceInFile(path: string, replaceFrom: string, replaceTo: string): void {
+	const file = readFileSync(path, 'utf8');
+	writeFileSync(path, file.replace(replaceFrom, replaceTo));
 }

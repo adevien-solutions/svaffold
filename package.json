@@ -27,7 +27,8 @@
 		"chalk": "^5.2.0",
 		"commander": "^10.0.1",
 		"create-svelte": "^4.2.0",
-		"inquirer": "^9.2.2"
+		"inquirer": "^9.2.2",
+		"svelte-add": "^2023.5.4-0.0"
 	},
 	"devDependencies": {
 		"@types/inquirer": "^9.0.3",

@@ -14,6 +14,7 @@ import {
 	getTurboJsonContent
 } from './files/index.js';
 import { Settings } from './types.js';
+import { isSharedType, isSvelteType } from './utils.js';
 
 export class Generator {
 	/** Root where the CLI got called */
@@ -61,8 +62,17 @@ export class Generator {
 
 	private async _createProjects(): Promise<void[]> {
 		const promises = this.settings.archetypes.map((type) => {
+			let file = '';
+			let args: string[] = [];
+			if (isSvelteType(type)) {
+				file = `./dist/projects/svelte.js`;
+				args = [type, this.dir, JSON.stringify(this.settings)];
+			} else {
+				file = `./dist/projects/${type}.js`;
+				args = [this.dir, JSON.stringify(this.settings)];
+			}
 			return new Promise<void>((resolve) => {
-				const proc = fork(`./dist/projects/${type}.js`, [this.dir, JSON.stringify(this.settings)]);
+				const proc = fork(file, args);
 				proc.once('exit', resolve);
 			});
 		});
