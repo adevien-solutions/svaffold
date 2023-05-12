@@ -3,8 +3,8 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { readFileSync } from 'fs';
-import { getSettings, createFiles, installDependencies, initializeGit } from './utils.js';
-import path from 'path';
+import { getSettings } from './utils.js';
+import { Generator } from './generator.js';
 
 const program = new Command();
 const versionNumber = readFileSync('version.txt', 'utf8');
@@ -23,8 +23,5 @@ program
 	.option('--force', 'overwrite existing files', false)
 	.parse(process.argv);
 
-const dir = path.normalize(program.args[0]);
 const settings = await getSettings(program.opts());
-await createFiles(dir, settings);
-await installDependencies(dir, settings);
-await initializeGit(dir, settings);
+await new Generator(program.args[0], settings).init();

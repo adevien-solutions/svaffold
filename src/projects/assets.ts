@@ -4,7 +4,7 @@ import { existsSync, mkdirSync } from 'fs';
 import { Archetype, Settings } from '../types.js';
 
 export async function createAssetsProject(dir: string, settings: Settings): Promise<void> {
-	dir = path.join(process.cwd(), dir, `projects/${Archetype.assets}`);
+	dir = path.join(dir, `projects/${Archetype.assets}`);
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
 

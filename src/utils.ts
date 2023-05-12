@@ -1,20 +1,6 @@
 import inquirer from 'inquirer';
-import chalk from 'chalk';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { Archetype, Settings } from './types.js';
 import { svelteApps, otherApps, CHOICES } from './constants.js';
-import {
-	getDockerfileContent,
-	getGitignoreContent,
-	getPackageJsonContent,
-	getPnpmWorkspaceYamlContent,
-	getPrettierignoreContent,
-	getPrettierrcContent,
-	getReadmeMdContent,
-	getTurboJsonContent
-} from './files/index.js';
-import { fork } from 'child_process';
-import { Announcer } from './announcer.js';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
 	const answers = await inquirer.prompt<Settings>([
@@ -87,65 +73,6 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 	]);
 
 	return { ...answers, archetypes: [...answers.archetypes, Archetype.config], options };
-}
-
-export async function createFiles(dir: string, settings: Settings): Promise<void> {
-	Announcer.serialInfo('Creating files');
-	createRoot(dir, settings);
-	await Promise.all(createProjects(settings.archetypes, dir, settings));
-}
-
-function createRoot(dir: string, settings: Settings): void {
-	const root = process.cwd();
-	existsSync(dir) || mkdirSync(dir, { recursive: true });
-	process.chdir(dir);
-	const files = {
-		'.gitignore': getGitignoreContent(),
-		'.prettierignore': getPrettierignoreContent(),
-		'.prettierrc': getPrettierrcContent(),
-		Dockerfile: getDockerfileContent(),
-		'package.json': getPackageJsonContent(settings),
-		'pnpm-workspace.yaml': getPnpmWorkspaceYamlContent(settings),
-		'README.md': getReadmeMdContent(settings),
-		'turbo.json': getTurboJsonContent()
-	};
-	Object.entries(files).forEach(([path, content]) =>
-		checkAndWriteFile(path, content, settings.options.force)
-	);
-	process.chdir(root);
-}
-
-function createProjects(types: Archetype[], dir: string, settings: Settings): Promise<void>[] {
-	return types.map((type) => {
-		return new Promise<void>((resolve) => {
-			const proc = fork(`./dist/projects/${type}.js`, [dir, JSON.stringify(settings)]);
-			proc.once('exit', resolve);
-		});
-	});
-}
-
-export function trimDirectory(dir: string): string {
-	return dir.replace(/\/$/, '');
-}
-
-export function checkAndWriteFile(path: string, content: string, force: boolean): void {
-	if (!force && existsSync(path)) {
-		const highlight = chalk.green(path);
-		const force = chalk.yellow('--force');
-		console.log(
-			`Skipping ${highlight} as it already exists. Use ${force} to overwrite existing files.`
-		);
-	} else {
-		writeFileSync(path, content);
-	}
-}
-
-export async function installDependencies(dir: string, settings: Settings): Promise<void> {
-	Announcer.serialInfo('Installing dependencies');
-}
-
-export async function initializeGit(dir: string, settings: Settings): Promise<void> {
-	Announcer.serialInfo('Initializing git');
 }
 
 export function isSharedType(type: Archetype): boolean {
