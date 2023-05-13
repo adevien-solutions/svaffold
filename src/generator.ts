@@ -11,7 +11,8 @@ import {
 	getPackageJsonContent,
 	getPnpmWorkspaceYamlContent,
 	getReadmeMdContent,
-	getTurboJsonContent
+	getTurboJsonContent,
+	getDockerignoreContent
 } from './files/index.js';
 import { Settings } from './types.js';
 import { isSvelteType } from './utils.js';
@@ -48,6 +49,8 @@ export class Generator {
 		existsSync(this.dir) || mkdirSync(this.dir, { recursive: true });
 		process.chdir(this.dir);
 		const files = {
+			'.dockerignore': getDockerignoreContent(),
+			'.env': '',
 			'.gitignore': getGitignoreContent(),
 			'.prettierignore': getPrettierignoreContent(),
 			'.prettierrc': getPrettierrcContent(),

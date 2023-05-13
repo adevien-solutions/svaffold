@@ -84,9 +84,14 @@ export function isSharedType(type: Archetype): boolean {
 	return type === Archetype.config || type === Archetype.lib;
 }
 
-export function replaceInFile(path: string, replaceFrom: string, replaceTo: string): void {
+export function replaceInFile(
+	path: string,
+	replaceFrom: string,
+	replaceTo: string,
+	all = false
+): void {
 	const file = readFileSync(path, 'utf8');
-	writeFileSync(path, file.replace(replaceFrom, replaceTo));
+	writeFileSync(path, file[all ? 'replaceAll' : 'replace'](replaceFrom, replaceTo));
 }
 
 export async function getPackageVersion(name: keyof typeof PACKAGE_VERSION_URLS): Promise<string> {

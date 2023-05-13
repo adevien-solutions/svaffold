@@ -1,3 +1,4 @@
+export * from './.dockerignore.js';
 export * from './.gitignore.js';
 export * from './.prettierignore.js';
 export * from './.prettierrc.js';
