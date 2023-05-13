@@ -1,11 +1,12 @@
 {
 	"name": "@adevien/svelte-scaffold",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"description": "Scaffold a monorepo to collect projects of a new client",
 	"main": "index.js",
 	"scripts": {
 		"lint": "eslint src",
-		"build": "npx tsc && cp package.json dist/package.json && cp version.txt dist/version.txt",
+		"build": "npx tsc && cp package.json dist/package.json",
+		"publish": "npm run build && cd dist && npm publish --access public && cd ..",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"bin": {

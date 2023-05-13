@@ -75,7 +75,7 @@ _(A GitHub Workflow will be created to sync the assets with your bucket)_
 ## Usage
 
 ```bash
-npx run @adevien/svelte-scaffold root-dir
+npx run @adevien/svelte-scaffold@latest root-dir
 ```
 
 **Arguments:**

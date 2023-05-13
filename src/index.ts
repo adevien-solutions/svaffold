@@ -2,15 +2,14 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { readFileSync } from 'fs';
 import { getSettings } from './utils.js';
 import { Generator } from './generator.js';
 
+const VERSION_NUMBER = '1.0.2';
 const program = new Command();
-const versionNumber = readFileSync('version.txt', 'utf8');
 
 program
-	.version(versionNumber)
+	.version(VERSION_NUMBER)
 	.usage('npx @adevien/svelte-scaffold [options]')
 	.description(
 		chalk.bold(
