@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import { Archetype, Settings } from './types.js';
-import { SVELTE_APPS, OTHER_APPS, CHOICES } from './constants.js';
+import { SVELTE_APPS, OTHER_APPS, CHOICES, PACKAGE_VERSION_URLS } from './constants.js';
 import { readFileSync, writeFileSync } from 'fs';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
@@ -87,4 +87,10 @@ export function isSharedType(type: Archetype): boolean {
 export function replaceInFile(path: string, replaceFrom: string, replaceTo: string): void {
 	const file = readFileSync(path, 'utf8');
 	writeFileSync(path, file.replace(replaceFrom, replaceTo));
+}
+
+export async function getPackageVersion(name: keyof typeof PACKAGE_VERSION_URLS): Promise<string> {
+	const { version } = await (await fetch(PACKAGE_VERSION_URLS[name])).json();
+	version.replace('v', '');
+	return '^' + version;
 }
