@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { APP_DEV_URLS } from '../../constants.js';
 import { Archetype, Settings } from '../../types.js';
 import { getPackageVersion, replaceInFile } from '../../utils.js';
 
@@ -21,6 +22,10 @@ export async function getPackageJsonContent(settings: Settings, type: Archetype)
 		const autoAdapter = '@sveltejs/adapter-auto';
 		delete packageJson.devDependencies[autoAdapter];
 		replaceInFile('svelte.config.js', autoAdapter, name);
+	}
+	if (type in APP_DEV_URLS) {
+		const { port } = APP_DEV_URLS[type as keyof typeof APP_DEV_URLS];
+		packageJson.scripts.dev = `vite dev --open --port ${port}`;
 	}
 
 	return JSON.stringify(packageJson, null, 2) + '\n';

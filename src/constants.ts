@@ -119,12 +119,12 @@ export const OTHER_APPS: Archetypes = [
 ] as const;
 
 export const APP_DEV_URLS = {
-	[Archetype.landing]: 'http://localhost:3000',
-	[Archetype.blog]: 'http://localhost:3001',
-	[Archetype.app]: 'http://localhost:3002',
-	[Archetype.lib]: 'http://localhost:3003',
-	[Archetype.cms]: 'http://localhost:6000',
-	[Archetype.assets]: 'http://localhost:8000'
+	[Archetype.landing]: new URL('http://localhost:3000'),
+	[Archetype.blog]: new URL('http://localhost:3001'),
+	[Archetype.app]: new URL('http://localhost:3002'),
+	[Archetype.lib]: new URL('http://localhost:3003'),
+	[Archetype.cms]: new URL('http://localhost:6000'),
+	[Archetype.assets]: new URL('http://localhost:8000')
 } as const;
 
 export const PACKAGE_VERSION_URLS = {

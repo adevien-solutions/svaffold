@@ -9,7 +9,7 @@ ${settings.archetypes
 	.filter((type) => !isSharedType(type))
 	.map((type) => {
 		if (type in APP_DEV_URLS) {
-			const url = APP_DEV_URLS[type as keyof typeof APP_DEV_URLS];
+			const url = APP_DEV_URLS[type as keyof typeof APP_DEV_URLS].href;
 			return `export const ${type} = {
 	production: '${url}',
 	development: '${url}'
