@@ -38,6 +38,15 @@ export async function createSvelteProject(
 	execSync(`npx svelte-add@latest tailwindcss${daisy}${plugins}`);
 	writeFileSync('tailwind.config.cjs', getTailwindConfigCjsContent(settings));
 	writeFileSync('postcss.config.cjs', getPostcssConfigCjsContent(settings));
+	writeFileSync('README.md', `# @${client}/${type}\n`);
+	replaceInFile(
+		'svelte.config.js',
+		'adapter: adapter()',
+		`adapter: adapter(),
+		env: {
+			dir: '../..'
+		}`
+	);
 	if (settings.designSystem === 'skeleton') {
 		replaceInFile(
 			'src/routes/+layout.svelte',
@@ -48,7 +57,6 @@ export async function createSvelteProject(
 	import '../app.postcss';`
 		);
 	}
-	writeFileSync('README.md', `# @${client}/${type}\n`);
 	rmSync('.prettierrc');
 	rmSync('.prettierignore');
 

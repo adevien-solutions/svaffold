@@ -39,11 +39,11 @@ export class Generator {
 
 	private async _createFiles(): Promise<void> {
 		Announcer.info('Creating files');
-		this._createRoot();
+		await this._createRoot();
 		await this._createProjects();
 	}
 
-	private _createRoot(): void {
+	private async _createRoot(): Promise<void> {
 		const root = process.cwd();
 		existsSync(this.dir) || mkdirSync(this.dir, { recursive: true });
 		process.chdir(this.dir);
@@ -52,7 +52,7 @@ export class Generator {
 			'.prettierignore': getPrettierignoreContent(),
 			'.prettierrc': getPrettierrcContent(),
 			Dockerfile: getDockerfileContent(),
-			'package.json': getPackageJsonContent(this.settings),
+			'package.json': await getPackageJsonContent(this.settings),
 			'pnpm-workspace.yaml': getPnpmWorkspaceYamlContent(this.settings),
 			'README.md': getReadmeMdContent(this.settings),
 			'turbo.json': getTurboJsonContent()

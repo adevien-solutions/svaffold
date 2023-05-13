@@ -37,7 +37,7 @@ export async function getPackageJsonContent(settings: Settings): Promise<string>
 }
 
 function getScriptTypes(type: Archetype, settings: Settings): ScriptType[] {
-	if (type === Archetype.assets) return [];
+	if (type === Archetype.assets || type === Archetype.config) return [];
 	if (SVELTE_APPS.find((app) => app.value === type)) {
 		return settings.svelteDeploy === 'docker'
 			? [...SCRIPT_TYPES]
