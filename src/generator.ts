@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { fork } from 'child_process';
+import { execSync, fork } from 'child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import path from 'path';
 import { Announcer } from './announcer.js';
@@ -110,12 +110,22 @@ export class Generator {
 
 	private async _installDependencies(): Promise<void> {
 		Announcer.info('Installing dependencies');
-		// process.chdir(this.dir);
-		// execSync('pnpm install');
+		process.chdir(this.dir);
+		execSync('pnpm install');
 	}
 
 	private async _initializeGit(): Promise<void> {
 		Announcer.info('Initializing git');
+		process.chdir(this.dir);
+		execSync('git init');
+		if (!this.settings.repoUrl) {
+			return;
+		}
+		execSync('git add .');
+		execSync('git commit -m "feat: initial commit"');
+		execSync('git branch -M main');
+		execSync(`git remote add origin ${this.settings.repoUrl}`);
+		execSync('git push -u origin main');
 	}
 
 	private _checkAndWriteFile(path: string, content: string): void {
