@@ -4,7 +4,6 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileS
 import { Archetype, Settings } from '../types.js';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
-import { Announcer } from '../announcer.js';
 import { replaceInFile } from '../utils.js';
 
 export async function createCmsProject(dir: string, settings: Settings): Promise<void> {
@@ -20,12 +19,12 @@ export async function createCmsProject(dir: string, settings: Settings): Promise
 			`npx create-payload-app --name ${Archetype.cms} --template blank --db ${db} --no-deps`,
 			{ stdio: 'ignore' }
 		);
-		Announcer.addDelayedMessage(
-			`\n\tPayload will try to connect to a local MongoDB instance at ${chalk.green(db)}`
-		);
-		Announcer.addDelayedMessage(
-			`\tYou can change this at ${chalk.green(path.join(dir, Archetype.cms, '.env'))}`
-		);
+		if (process.send) {
+			process.send(`Payload will try to connect to a local MongoDB instance at ${chalk.green(db)}
+You can change this by updating ${chalk.green('MONGODB_URI')} in ${chalk.green(
+				path.join(root, '.env')
+			)}`);
+		}
 		const packageJson = JSON.parse(readFileSync(`${Archetype.cms}/package.json`, 'utf-8'));
 		packageJson.name = `@${client}/${Archetype.cms}`;
 		packageJson.version = '0.0.1';

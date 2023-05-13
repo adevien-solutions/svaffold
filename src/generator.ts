@@ -34,7 +34,7 @@ export class Generator {
 		await this._createFiles();
 		await this._installDependencies();
 		await this._initializeGit();
-		Announcer.stopSpinner();
+		Announcer.finish();
 		return this;
 	}
 
@@ -77,6 +77,7 @@ export class Generator {
 			}
 			return new Promise<void>((resolve) => {
 				const proc = fork(file, args);
+				proc.on('message', (message) => Announcer.addDelayedMessage(message.toString()));
 				proc.once('exit', resolve);
 			});
 		});

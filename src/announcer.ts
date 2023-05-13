@@ -18,7 +18,7 @@ export class Announcer {
 		}
 	}
 
-	/** This method will print accumulated messages after the last spinner stopped. */
+	/** Add messages which will be displayed when the `finish` method is called. */
 	static addDelayedMessage(message: string): void {
 		this._delayedMessages.push(message);
 	}
@@ -27,7 +27,14 @@ export class Announcer {
 		if (this._lastOraInstance) {
 			this._lastOraInstance.succeed();
 			this._lastOraInstance = null;
-			this._delayedMessages.forEach((message) => console.log(message));
+		}
+	}
+
+	static finish(): void {
+		this.stopSpinner();
+		if (this._delayedMessages.length > 0) {
+			console.log(chalk.cyan.bold('\nInfos for your monorepo:'));
+			this._delayedMessages.forEach((message) => console.log(message + '\n'));
 			this._delayedMessages = [];
 		}
 	}
