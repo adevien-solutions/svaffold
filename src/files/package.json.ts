@@ -30,14 +30,20 @@ export async function getPackageJsonContent(settings: Settings): Promise<string>
 			.slice(0, -1)}
 	},
 	"devDependencies": {
-		"turbo": "${await getPackageVersion('turbo')}"
+		"turbo": "${await getPackageVersion('turbo')}",
+		"dotenv-cli": "${await getPackageVersion('dotenv-cli')}"
 	}
 }
 `;
 }
 
 function getScriptTypes(type: Archetype, settings: Settings): ScriptType[] {
-	if (type === Archetype.assets || type === Archetype.config) return [];
+	if (type === Archetype.assets || type === Archetype.config) {
+		return [];
+	}
+	if (type === Archetype.cms) {
+		return ['dev', 'build', 'preview', 'docker-build', 'docker-preview'];
+	}
 	if (SVELTE_APPS.find((app) => app.value === type)) {
 		return settings.svelteDeploy === 'docker'
 			? [...SCRIPT_TYPES]
@@ -51,8 +57,8 @@ function getScriptString(script: ScriptType, settings: Settings, type?: Archetyp
 	const hasAssets = settings.archetypes.includes(Archetype.assets);
 	const scripts: Record<ScriptType, { general: string; scoped: string }> = {
 		dev: {
-			general: `turbo run dev --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
-			scoped: `turbo run dev${
+			general: `dotenv -- turbo run dev --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
+			scoped: `dotenv -- turbo run dev${
 				hasAssets ? ` --parallel --filter=@${client}/${Archetype.assets}` : ''
 			} --filter=@${client}/${type}`
 		},
@@ -78,7 +84,7 @@ function getScriptString(script: ScriptType, settings: Settings, type?: Archetyp
 		},
 		'docker-preview': {
 			general: '',
-			scoped: `docker run -p 80:80 --rm --name ${client}-${type} ${client}/${type}`
+			scoped: `docker run -p 80:80 --env-file .env --rm --name ${client}-${type} ${client}/${type}`
 		}
 	};
 	return type ? scripts[script].scoped : scripts[script].general;
