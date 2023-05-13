@@ -84,7 +84,7 @@ export const CHOICES = {
 	]
 } as const;
 
-export const svelteApps: Archetypes = [
+export const SVELTE_APPS: Archetypes = [
 	{
 		name: 'Landing page',
 		value: Archetype.landing
@@ -103,7 +103,7 @@ export const svelteApps: Archetypes = [
 	}
 ] as const;
 
-export const otherApps: Archetypes = [
+export const OTHER_APPS: Archetypes = [
 	{
 		name: 'CMS',
 		value: Archetype.cms
@@ -117,6 +117,15 @@ export const otherApps: Archetypes = [
 		value: Archetype.cli
 	}
 ] as const;
+
+export const APP_DEV_URLS = {
+	[Archetype.landing]: 'http://localhost:3000',
+	[Archetype.blog]: 'http://localhost:3001',
+	[Archetype.app]: 'http://localhost:3002',
+	[Archetype.lib]: 'http://localhost:3003',
+	[Archetype.cms]: 'http://localhost:6000',
+	[Archetype.assets]: 'http://localhost:8000'
+} as const;
 
 export const SCRIPT_TYPES = [
 	'dev',

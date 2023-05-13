@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import { Archetype, Settings } from './types.js';
-import { svelteApps, otherApps, CHOICES } from './constants.js';
+import { SVELTE_APPS, OTHER_APPS, CHOICES } from './constants.js';
 import { readFileSync, writeFileSync } from 'fs';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
@@ -18,7 +18,7 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 			name: 'archetypes',
 			type: 'checkbox',
 			message: 'Select project archetypes',
-			choices: [...svelteApps, ...otherApps]
+			choices: [...SVELTE_APPS, ...OTHER_APPS]
 		},
 		{
 			name: 'designSystem',
@@ -28,7 +28,7 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 			default: 'daisy',
 			choices: CHOICES.designSystem,
 			when: ({ archetypes }: { archetypes: string[] }): boolean => {
-				return svelteApps.some((app) => archetypes.includes(app.value));
+				return SVELTE_APPS.some((app) => archetypes.includes(app.value));
 			}
 		},
 		{
@@ -48,7 +48,7 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 			default: 'auto',
 			choices: CHOICES.svelteDeploy,
 			when: ({ archetypes }: { archetypes: string[] }): boolean => {
-				return svelteApps.some((app) => archetypes.includes(app.value));
+				return SVELTE_APPS.some((app) => archetypes.includes(app.value));
 			}
 		},
 		{
@@ -77,7 +77,7 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 }
 
 export function isSvelteType(type: Archetype): boolean {
-	return svelteApps.find((app) => app.value === type) !== undefined;
+	return SVELTE_APPS.find((app) => app.value === type) !== undefined;
 }
 
 export function isSharedType(type: Archetype): boolean {

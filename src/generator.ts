@@ -82,6 +82,8 @@ export class Generator {
 
 	private async _installDependencies(): Promise<void> {
 		Announcer.info('Installing dependencies');
+		// process.chdir(this.dir);
+		// execSync('pnpm install');
 	}
 
 	private async _initializeGit(): Promise<void> {

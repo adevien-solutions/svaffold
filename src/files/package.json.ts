@@ -1,4 +1,4 @@
-import { SCRIPT_TYPES, svelteApps } from '../constants.js';
+import { SCRIPT_TYPES, SVELTE_APPS } from '../constants.js';
 import { Archetype, ScriptType, Settings } from '../types.js';
 
 export function getPackageJsonContent(settings: Settings): string {
@@ -34,7 +34,7 @@ export function getPackageJsonContent(settings: Settings): string {
 
 function getScriptTypes(type: Archetype, settings: Settings): ScriptType[] {
 	if (type === Archetype.assets) return [];
-	if (svelteApps.find((app) => app.value === type)) {
+	if (SVELTE_APPS.find((app) => app.value === type)) {
 		return settings.svelteDeploy === 'docker'
 			? [...SCRIPT_TYPES]
 			: SCRIPT_TYPES.filter((s) => !s.startsWith('docker-'));
