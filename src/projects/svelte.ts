@@ -1,10 +1,15 @@
 import path from 'path';
 import { argv } from 'process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
 import { create } from 'create-svelte';
 import { Archetype, Settings } from '../types.js';
 import { execSync } from 'child_process';
 import { isSharedType, replaceInFile } from '../utils.js';
+import {
+	getPackageJsonContent,
+	getPostcssConfigCjsContent,
+	getTailwindConfigCjsContent
+} from '../files/svelte/index.js';
 
 export async function createSvelteProject(
 	type: Archetype,
@@ -27,31 +32,12 @@ export async function createSvelteProject(
 		vitest: true
 	});
 
-	const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'));
-	packageJson.name = `@${client}/${type}`;
-	packageJson.devDependencies[`@${client}/${Archetype.config}`] = 'workspace:*';
-	if (settings.archetypes.includes(Archetype.lib)) {
-		packageJson.devDependencies[`@${client}/${Archetype.lib}`] = 'workspace:*';
-	}
-	if (settings.designSystem === 'skeleton') {
-		const { version } = await (
-			await fetch('https://raw.githubusercontent.com/skeletonlabs/skeleton/dev/package.json')
-		).json();
-		packageJson.devDependencies['@skeletonlabs/skeleton'] = version.replace('v', '^');
-	}
-	writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
-
+	writeFileSync('package.json', await getPackageJsonContent(settings, type));
 	const daisy = settings.designSystem === 'daisy' ? ' --daisyui' : '';
 	const plugins = settings.designSystem === 'none' ? ' --forms --typography' : '';
 	execSync(`npx svelte-add@latest tailwindcss${daisy}${plugins}`);
-	writeFileSync(
-		'tailwind.config.cjs',
-		`module.exports = require('@${client}/${Archetype.config}/tailwind.config.cjs')`
-	);
-	writeFileSync(
-		'postcss.config.cjs',
-		`module.exports = require('@${client}/${Archetype.config}/postcss.config.cjs')`
-	);
+	writeFileSync('tailwind.config.cjs', getTailwindConfigCjsContent(settings));
+	writeFileSync('postcss.config.cjs', getPostcssConfigCjsContent(settings));
 	if (settings.designSystem === 'skeleton') {
 		replaceInFile(
 			'src/routes/+layout.svelte',
@@ -62,18 +48,9 @@ export async function createSvelteProject(
 	import '../app.postcss';`
 		);
 	}
-
 	writeFileSync('README.md', `# @${client}/${type}\n`);
 	rmSync('.prettierrc');
 	rmSync('.prettierignore');
-
-	// TODO tsconfig is supposed to support array of files to extend from,
-	// but it throws error
-	// replaceInFile(
-	// 	'tsconfig.json',
-	// 	'"./.svelte-kit/tsconfig.json"',
-	// 	`["./.svelte-kit/tsconfig.json", "@${client}/config/tsconfig.json"]`
-	// );
 
 	process.exit();
 }

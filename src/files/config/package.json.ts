@@ -5,7 +5,7 @@ export function getPackageJsonContent(settings: Settings): string {
 		name: `@${settings.client}/${Archetype.config}`,
 		version: '0.0.1',
 		types: 'url.d.ts',
-		files: ['tailwind.config.cjs', 'postcss.config.cjs', 'index', 'url.ts']
+		files: ['tailwind.config.cjs', 'postcss.config.cjs', 'index.ts', 'url.ts']
 	};
-	return JSON.stringify(packageJson, null, 2);
+	return JSON.stringify(packageJson, null, 2) + '\n';
 }
