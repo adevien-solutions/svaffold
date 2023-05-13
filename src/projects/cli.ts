@@ -1,6 +1,6 @@
 import path from 'path';
 import { argv } from 'process';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { Archetype, Settings } from '../types.js';
 
 export async function createCliProject(dir: string, settings: Settings): Promise<void> {
@@ -8,7 +8,7 @@ export async function createCliProject(dir: string, settings: Settings): Promise
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
 
-	// TODO
+	writeFileSync('README.md', `# @${settings.client}/${Archetype.cli}\n`);
 
 	process.exit();
 }

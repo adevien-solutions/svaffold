@@ -19,6 +19,7 @@ export async function createConfigProject(dir: string, settings: Settings): Prom
 	writeFileSync('url.ts', getUrlTsContent(settings));
 	writeFileSync('postcss.config.cjs', getPostcssConfigCjsContent());
 	writeFileSync('tailwind.config.cjs', getTailwindConfigCjsContent(settings));
+	writeFileSync('README.md', `# @${settings.client}/${Archetype.config}\n`);
 
 	process.exit();
 }

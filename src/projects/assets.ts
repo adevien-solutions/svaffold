@@ -11,6 +11,7 @@ export async function createAssetsProject(dir: string, settings: Settings): Prom
 
 	writeFileSync('package.json', getPackageJsonContent(settings));
 	writeFileSync('index.js', getIndexJsContent());
+	writeFileSync('README.md', `# @${settings.client}/${Archetype.assets}\n`);
 	mkdirSync('static');
 
 	process.exit();
