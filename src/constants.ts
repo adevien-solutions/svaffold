@@ -135,7 +135,8 @@ export const PACKAGE_VERSION_URLS = {
 	'@sveltejs/adapter-vercel':
 		'https://raw.githubusercontent.com/sveltejs/kit/master/packages/adapter-vercel/package.json',
 	'@sveltejs/adapter-node':
-		'https://raw.githubusercontent.com/sveltejs/kit/master/packages/adapter-node/package.json'
+		'https://raw.githubusercontent.com/sveltejs/kit/master/packages/adapter-node/package.json',
+	turbo: 'https://raw.githubusercontent.com/vercel/turbo/main/packages/turbo/package.json'
 } as const;
 
 export const SCRIPT_TYPES = [

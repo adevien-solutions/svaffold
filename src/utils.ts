@@ -90,7 +90,15 @@ export function replaceInFile(path: string, replaceFrom: string, replaceTo: stri
 }
 
 export async function getPackageVersion(name: keyof typeof PACKAGE_VERSION_URLS): Promise<string> {
-	const { version } = await (await fetch(PACKAGE_VERSION_URLS[name])).json();
+	let { version }: { version: string } = await (await fetch(PACKAGE_VERSION_URLS[name])).json();
+	if (version.includes('-canary')) {
+		const index = version.indexOf('-');
+		const sliced = version.slice(0, index).split('.');
+		const last = sliced.length - 1;
+		sliced[last] = (+sliced[last] - 1).toString();
+		sliced.join('.');
+		version = sliced.join('.');
+	}
 	version.replace('v', '');
 	return '^' + version;
 }

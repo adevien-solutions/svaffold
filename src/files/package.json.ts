@@ -1,7 +1,8 @@
 import { SCRIPT_TYPES, SVELTE_APPS } from '../constants.js';
 import { Archetype, ScriptType, Settings } from '../types.js';
+import { getPackageVersion } from '../utils.js';
 
-export function getPackageJsonContent(settings: Settings): string {
+export async function getPackageJsonContent(settings: Settings): Promise<string> {
 	const { client } = settings;
 	return `{
 	"name": "@${client}/monorepo",
@@ -27,6 +28,9 @@ export function getPackageJsonContent(settings: Settings): string {
 			.join('\n\n\t\t')
 			.trim()
 			.slice(0, -1)}
+	},
+	"devDependencies": {
+		"turbo": "${await getPackageVersion('turbo')}"
 	}
 }
 `;
