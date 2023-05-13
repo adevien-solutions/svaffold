@@ -76,7 +76,7 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 			type: 'input',
 			message: 'Repository URL',
 			suffix:
-				' (blank or an empty repository - preferably on GitHub, so GitHub Actions can be generated)',
+				' (leave blank or add an empty repository - preferably GitHub, so GitHub Actions can be generated)',
 			validate: (input: string): boolean => {
 				try {
 					return input ? !!new URL(input) : true;
