@@ -70,6 +70,20 @@ export async function getSettings(options: Settings['options']): Promise<Setting
 			when: ({ archetypes }: { archetypes: string[] }): boolean => {
 				return archetypes.includes(Archetype.assets);
 			}
+		},
+		{
+			name: 'repoUrl',
+			type: 'input',
+			message: 'Repository URL',
+			suffix:
+				' (blank or an empty repository - preferably on GitHub, so GitHub Actions can be generated)',
+			validate: (input: string): boolean => {
+				try {
+					return input ? !!new URL(input) : true;
+				} catch (_) {
+					return false;
+				}
+			}
 		}
 	]);
 
@@ -106,4 +120,13 @@ export async function getPackageVersion(name: keyof typeof PACKAGE_VERSION_URLS)
 	}
 	version.replace('v', '');
 	return '^' + version;
+}
+
+export function isRepoOnGitHub(url: string): boolean {
+	try {
+		const { host } = new URL(url);
+		return host.includes('github');
+	} catch (_) {
+		return false;
+	}
 }

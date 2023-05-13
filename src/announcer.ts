@@ -10,6 +10,9 @@ export class Announcer {
 	static info(message: string, isSerial = true, spinner = true): void {
 		this.stopSpinner();
 		message = isSerial ? `${this._nextMessageNumber++}. ${message}` : message;
+		if (this._nextMessageNumber === 2) {
+			console.log('\n');
+		}
 		const text = chalk.blue.bold(message);
 		if (spinner) {
 			this._lastOraInstance = ora({ text, spinner: spinners.squareCorners, color: 'blue' }).start();

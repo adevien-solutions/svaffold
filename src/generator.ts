@@ -14,8 +14,9 @@ import {
 	getTurboJsonContent,
 	getDockerignoreContent
 } from './files/index.js';
-import { Settings } from './types.js';
-import { isSvelteType } from './utils.js';
+import { getPublishSvelteYmlContent, getAssetsSyncYmlContent } from './files/workflows/index.js';
+import { Archetype, Settings } from './types.js';
+import { isRepoOnGitHub, isSvelteType } from './utils.js';
 
 export class Generator {
 	/** Root where the CLI got called */
@@ -41,6 +42,7 @@ export class Generator {
 	private async _createFiles(): Promise<void> {
 		Announcer.info('Creating files');
 		await this._createRoot();
+		await this._createWorkflows();
 		await this._createProjects();
 	}
 
@@ -61,6 +63,28 @@ export class Generator {
 			'turbo.json': getTurboJsonContent()
 		};
 		Object.entries(files).forEach(([path, content]) => this._checkAndWriteFile(path, content));
+		process.chdir(root);
+	}
+
+	private async _createWorkflows(): Promise<void> {
+		const apps = this.settings.archetypes.filter(isSvelteType);
+		const isAssetsSelected = this.settings.archetypes.includes(Archetype.assets);
+		if (!isRepoOnGitHub(this.settings.repoUrl) || (apps.length === 0 && !isAssetsSelected)) {
+			return;
+		}
+
+		const root = process.cwd();
+		const folder = path.join(this.dir, '.github', 'workflows');
+		existsSync(folder) || mkdirSync(folder, { recursive: true });
+		process.chdir(folder);
+
+		apps.forEach((type) => {
+			writeFileSync(`publish-${type}.yml`, getPublishSvelteYmlContent(this.settings, type));
+		});
+		if (isAssetsSelected) {
+			writeFileSync(`sync-assets.yml`, getAssetsSyncYmlContent(this.settings));
+		}
+
 		process.chdir(root);
 	}
 

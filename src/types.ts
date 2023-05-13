@@ -20,6 +20,7 @@ export type Archetypes = Readonly<
 
 export type Settings = {
 	client: string;
+	repoUrl: string;
 	options: {
 		force: boolean;
 	};
