@@ -2,6 +2,8 @@ import inquirer from 'inquirer';
 import { Archetype, Settings } from './types.js';
 import { SVELTE_APPS, OTHER_APPS, CHOICES, PACKAGE_VERSION_URLS } from './constants.js';
 import { readFileSync, writeFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
 	const answers = await inquirer.prompt<Settings>([
@@ -129,4 +131,8 @@ export function isRepoOnGitHub(url: string): boolean {
 	} catch (_) {
 		return false;
 	}
+}
+export function getDirName(url: string): string {
+	const filename = fileURLToPath(url);
+	return path.dirname(filename);
 }

@@ -16,7 +16,7 @@ import {
 } from './files/index.js';
 import { getPublishSvelteYmlContent, getAssetsSyncYmlContent } from './files/workflows/index.js';
 import { Archetype, Settings } from './types.js';
-import { isRepoOnGitHub, isSvelteType } from './utils.js';
+import { getDirName, isRepoOnGitHub, isSvelteType } from './utils.js';
 
 export class Generator {
 	/** Root where the CLI got called */
@@ -33,8 +33,8 @@ export class Generator {
 
 	async init(): Promise<Generator> {
 		await this._createFiles();
-		await this._installDependencies();
-		await this._initializeGit();
+		this._installDependencies();
+		this._initializeGit();
 		Announcer.finish();
 		return this;
 	}
@@ -93,14 +93,14 @@ export class Generator {
 			let file = '';
 			let args: string[] = [];
 			if (isSvelteType(type)) {
-				file = `./dist/projects/svelte.js`;
+				file = `./projects/svelte.js`;
 				args = [type, this.dir, JSON.stringify(this.settings)];
 			} else {
-				file = `./dist/projects/${type}.js`;
+				file = `./projects/${type}.js`;
 				args = [this.dir, JSON.stringify(this.settings)];
 			}
 			return new Promise<void>((resolve) => {
-				const proc = fork(file, args);
+				const proc = fork(path.join(getDirName(import.meta.url), file), args);
 				proc.on('message', (message) => Announcer.addDelayedMessage(message.toString()));
 				proc.once('exit', resolve);
 			});
@@ -108,13 +108,13 @@ export class Generator {
 		return await Promise.all(promises);
 	}
 
-	private async _installDependencies(): Promise<void> {
+	private _installDependencies(): void {
 		Announcer.info('Installing dependencies');
 		process.chdir(this.dir);
 		execSync('pnpm install');
 	}
 
-	private async _initializeGit(): Promise<void> {
+	private _initializeGit(): void {
 		Announcer.info('Initializing git');
 		process.chdir(this.dir);
 		execSync('git init');
