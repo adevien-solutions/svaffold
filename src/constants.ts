@@ -137,7 +137,10 @@ export const PACKAGE_VERSION_URLS = {
 	'@sveltejs/adapter-node':
 		'https://raw.githubusercontent.com/sveltejs/kit/master/packages/adapter-node/package.json',
 	turbo: 'https://raw.githubusercontent.com/vercel/turbo/main/packages/turbo/package.json',
-	'dotenv-cli': 'https://raw.githubusercontent.com/entropitor/dotenv-cli/master/package.json'
+	'dotenv-cli': 'https://raw.githubusercontent.com/entropitor/dotenv-cli/master/package.json',
+	'@clack/prompt':
+		'https://raw.githubusercontent.com/natemoo-re/clack/main/packages/prompts/package.json',
+	kleur: 'https://raw.githubusercontent.com/lukeed/kleur/master/package.json'
 } as const;
 
 export const SCRIPT_TYPES = [

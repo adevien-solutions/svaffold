@@ -44,6 +44,9 @@ function getScriptTypes(type: Archetype, settings: Settings): ScriptType[] {
 	if (type === Archetype.cms) {
 		return ['dev', 'build', 'preview', 'docker-build', 'docker-preview'];
 	}
+	if (type === Archetype.cli) {
+		return ['dev', 'check', 'test', 'build', 'preview'];
+	}
 	if (SVELTE_APPS.find((app) => app.value === type)) {
 		return settings.svelteDeploy === 'docker'
 			? [...SCRIPT_TYPES]
