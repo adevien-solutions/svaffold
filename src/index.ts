@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { getSettings } from './utils.js';
 import { Generator } from './generator.js';
 
-const VERSION_NUMBER = '1.0.6';
+const VERSION_NUMBER = '1.0.7';
 const program = new Command();
 
 program
