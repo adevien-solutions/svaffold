@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { execSync, fork } from 'child_process';
+import { fork, spawn } from 'child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import path from 'path';
 import { Announcer } from './announcer.js';
@@ -33,8 +33,8 @@ export class Generator {
 
 	async init(): Promise<Generator> {
 		await this._createFiles();
-		this._installDependencies();
-		this._initializeGit();
+		await this._installDependencies();
+		await this._initializeGit();
 		Announcer.finish();
 		return this;
 	}
@@ -108,24 +108,24 @@ export class Generator {
 		return await Promise.all(promises);
 	}
 
-	private _installDependencies(): void {
-		Announcer.info('Installing dependencies');
-		process.chdir(this.dir);
-		execSync('pnpm install');
+	private async _installDependencies(): Promise<void> {
+		Announcer.info('Installing dependencies (this might take a while)');
+		return new Promise<void>((resolve) => {
+			const proc = spawn('pnpm', ['install'], { cwd: this.dir, stdio: 'ignore' });
+			proc.once('exit', resolve);
+		});
 	}
 
-	private _initializeGit(): void {
+	private async _initializeGit(): Promise<void> {
 		Announcer.info('Initializing git');
-		process.chdir(this.dir);
-		execSync('git init');
-		if (!this.settings.repoUrl) {
-			return;
-		}
-		execSync('git add .');
-		execSync('git commit -m "feat: initial commit"');
-		execSync('git branch -M main');
-		execSync(`git remote add origin ${this.settings.repoUrl}`);
-		execSync('git push -u origin main');
+		return new Promise<void>((resolve) => {
+			let command = 'git init';
+			if (this.settings.repoUrl) {
+				command += ` && git add . && git commit -m "feat: initial commit" && git branch -M main && git remote add origin ${this.settings.repoUrl} && git push -u origin main`;
+			}
+			const proc = spawn(command, { cwd: this.dir, stdio: 'ignore', shell: true });
+			proc.once('exit', resolve);
+		});
 	}
 
 	private _checkAndWriteFile(path: string, content: string): void {
