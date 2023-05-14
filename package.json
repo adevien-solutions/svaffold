@@ -6,7 +6,6 @@
 	"scripts": {
 		"lint": "eslint src",
 		"build": "npx tsc && cp package.json dist/package.json && cp README.md dist/README.md",
-		"publish": "npm run build && cd dist && npm publish --access public && cd ..",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"bin": {
