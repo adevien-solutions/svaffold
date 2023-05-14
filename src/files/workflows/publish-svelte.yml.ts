@@ -1,8 +1,9 @@
 import chalk from 'chalk';
+import path from 'path';
 import { Announcer } from '../../announcer.js';
-import { Archetype, Settings } from '../../types.js';
+import { Archetype, AllSettings } from '../../types.js';
 
-export function getPublishSvelteYmlContent(settings: Settings, type: Archetype): string {
+export function getPublishSvelteYmlContent(settings: AllSettings, type: Archetype): string {
 	if (settings.svelteDeploy !== 'cloudflare') {
 		return '';
 	}
@@ -12,6 +13,12 @@ export function getPublishSvelteYmlContent(settings: Settings, type: Archetype):
   - ${chalk.green('CLOUDFLARE_ACCOUNT_ID')}
 Learn more about how to obtain them here: ${chalk.green(
 		'https://github.com/cloudflare/pages-action/blob/main/README.md'
+	)}`);
+	Announcer.addDelayedMessage(`The GitHub Action will try to deploy ${chalk.green(
+		type
+	)} to a Cloudflare project named ${chalk.green(`${client}-${type}`)}
+You can change this by updating ${chalk.green('projectName')} in ${chalk.green(
+		path.join(settings.dir, `.github/workflows/publish-${type}.yml`)
 	)}`);
 
 	return `name: Deploy @${client}/${type}

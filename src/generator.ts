@@ -15,7 +15,7 @@ import {
 	getDockerignoreContent
 } from './files/index.js';
 import { getPublishSvelteYmlContent, getAssetsSyncYmlContent } from './files/workflows/index.js';
-import { Archetype, Settings } from './types.js';
+import { AllSettings, Archetype, Settings } from './types.js';
 import { getDirName, isRepoOnGitHub, isSvelteType } from './utils.js';
 
 export class Generator {
@@ -23,12 +23,12 @@ export class Generator {
 	readonly root: string;
 	/** Directory where the monorepo will be created */
 	readonly dir: string;
-	readonly settings: Settings;
+	readonly settings: AllSettings;
 
 	constructor(dir: string, settings: Settings) {
 		this.root = process.cwd();
 		this.dir = path.join(this.root, path.normalize(dir));
-		this.settings = settings;
+		this.settings = { ...settings, dir: this.dir, root: this.root };
 	}
 
 	async init(): Promise<Generator> {

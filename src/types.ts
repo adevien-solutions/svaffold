@@ -32,4 +32,9 @@ export type Settings = {
 	assetDeploy?: (typeof CHOICES.assetDeploy)[number]['value'];
 };
 
+export type AllSettings = Settings & {
+	root: string;
+	dir: string;
+};
+
 export type ScriptType = (typeof SCRIPT_TYPES)[number];

@@ -5,7 +5,7 @@ import spinners from 'cli-spinners';
 export class Announcer {
 	private static _nextMessageNumber = 1;
 	private static _lastOraInstance: Ora | null = null;
-	private static _delayedMessages: string[] = [];
+	private static _delayedMessages: Set<string> = new Set();
 
 	static info(message: string, isSerial = true, spinner = true): void {
 		this.stopSpinner();
@@ -23,7 +23,7 @@ export class Announcer {
 
 	/** Add messages which will be displayed when the `finish` method is called. */
 	static addDelayedMessage(message: string): void {
-		this._delayedMessages.push(message);
+		this._delayedMessages.add(message);
 	}
 
 	static stopSpinner(): void {
@@ -35,10 +35,10 @@ export class Announcer {
 
 	static finish(): void {
 		this.stopSpinner();
-		if (this._delayedMessages.length > 0) {
+		if (this._delayedMessages.size > 0) {
 			console.log(chalk.cyan.bold('\nInfos for your monorepo:'));
 			this._delayedMessages.forEach((message) => console.log(message + '\n'));
-			this._delayedMessages = [];
+			this._delayedMessages = new Set();
 		}
 	}
 }
