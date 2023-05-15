@@ -17,17 +17,24 @@ The following assumptions are made:
 A monorepo that uses [Turborepo](https://turbo.build/repo/). It can generate the following _empty_
 projects:
 
-- [x] Landing page (SvelteKit)
-- [x] Blog (SvelteKit)
-- [x] Custom app (SvelteKit)
-- [x] Component library (SvelteKit)
-- [x] CMS (Payload)
-- [x] CLI (Node.js)
-- [x] Assets (static files, served with Node.js in dev mode)
+**SvelteKit:**
+
+- [x] Landing page
+- [x] Blog
+- [x] Custom app
+- [x] Component library
+
+**Other:**
+
+- [x] CMS
+- [x] CLI
+- [x] Assets (shared static files)
 - [x] Config (shared configuration files)
 
-[TailwindCSS](https://tailwindcss.com/) will be installed and currently you can choose between the
-following design systems:
+### Options
+
+[TailwindCSS](https://tailwindcss.com/) will be installed, but you can extend it with the following
+design systems:
 
 - [x] DaisyUI
 - [x] SkeletonUI
@@ -68,7 +75,7 @@ _(A GitHub Workflow will be created to sync the assets with your bucket)_
 
 ## Requirements
 
-- node.js >= 14
+- node.js >= 16
 - pnpm >= 7
 - git
 
