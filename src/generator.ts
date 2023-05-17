@@ -16,7 +16,7 @@ import {
 } from './files/index.js';
 import { getPublishSvelteYmlContent, getAssetsSyncYmlContent } from './files/workflows/index.js';
 import { AllSettings, Archetype, Settings } from './types.js';
-import { getDirName, isRepoOnGitHub, isSvelteType } from './utils.js';
+import { getDirName, getStdioSetting, isRepoOnGitHub, isSvelteType } from './utils.js';
 
 export class Generator {
 	/** Root where the CLI got called */
@@ -111,7 +111,10 @@ export class Generator {
 	private async _installDependencies(): Promise<void> {
 		Announcer.info('Installing dependencies (this might take a while)');
 		return new Promise<void>((resolve) => {
-			const proc = spawn('pnpm', ['install'], { cwd: this.dir, stdio: 'ignore' });
+			const proc = spawn('pnpm', ['install'], {
+				cwd: this.dir,
+				stdio: getStdioSetting(this.settings)
+			});
 			proc.once('exit', resolve);
 		});
 	}
@@ -123,7 +126,11 @@ export class Generator {
 			if (this.settings.repoUrl) {
 				command += ` && git add . && git commit -m "feat: initial commit" && git branch -M main && git remote add origin ${this.settings.repoUrl} && git push -u origin main`;
 			}
-			const proc = spawn(command, { cwd: this.dir, stdio: 'ignore', shell: true });
+			const proc = spawn(command, {
+				cwd: this.dir,
+				stdio: getStdioSetting(this.settings),
+				shell: true
+			});
 			proc.once('exit', resolve);
 		});
 	}

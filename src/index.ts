@@ -20,6 +20,7 @@ program
 	)
 	.argument('<directory>', 'root of the monorepo')
 	.option('--force', 'overwrite existing files', false)
+	.option('--verbose', 'output the messages of subprocesses', false)
 	.parse(process.argv);
 
 const settings = await getSettings(program.opts());

@@ -4,7 +4,7 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileS
 import { Archetype, Settings } from '../types.js';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
-import { replaceInFile } from '../utils.js';
+import { getStdioSetting, replaceInFile } from '../utils.js';
 
 export async function createCmsProject(dir: string, settings: Settings): Promise<void> {
 	const { client } = settings;
@@ -17,7 +17,7 @@ export async function createCmsProject(dir: string, settings: Settings): Promise
 		const db = `mongodb://127.0.0.1/${client}-${Archetype.cms}`;
 		execSync(
 			`npx create-payload-app --name ${Archetype.cms} --template blank --db ${db} --no-deps`,
-			{ stdio: 'ignore' }
+			{ stdio: getStdioSetting(settings) }
 		);
 		if (process.send) {
 			process.send(`Payload will try to connect to a local MongoDB instance at ${chalk.green(db)}

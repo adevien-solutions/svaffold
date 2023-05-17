@@ -23,6 +23,7 @@ export type Settings = {
 	repoUrl: string;
 	options: {
 		force: boolean;
+		verbose: boolean;
 	};
 	archetypes: Archetype[];
 	designSystem?: (typeof CHOICES.designSystem)[number]['value'];

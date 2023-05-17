@@ -4,6 +4,7 @@ import { SVELTE_APPS, OTHER_APPS, CHOICES, PACKAGE_VERSION_URLS } from './consta
 import { readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { StdioOptions } from 'child_process';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
 	const answers = await inquirer.prompt<Settings>([
@@ -132,7 +133,12 @@ export function isRepoOnGitHub(url: string): boolean {
 		return false;
 	}
 }
+
 export function getDirName(url: string): string {
 	const filename = fileURLToPath(url);
 	return path.dirname(filename);
+}
+
+export function getStdioSetting(settings: Settings): StdioOptions {
+	return settings.options.verbose ? 'inherit' : 'ignore';
 }

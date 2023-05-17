@@ -93,10 +93,11 @@ npx @adevien/svelte-scaffold@latest root-dir
 
 **Options:**
 
-| Option            | Description                                 |
-| ----------------- | ------------------------------------------- |
-| `--force`         | overwrite existing files (default: `false`) |
-| `-h`, `--help`    | display help for command                    |
-| `-V`, `--version` | output the version number                   |
+| Option            | Description                                            |
+| ----------------- | ------------------------------------------------------ |
+| `--force`         | overwrite existing files (default: `false`)            |
+| `--verbose`       | output the messages of subprocesses (default: `false`) |
+| `-h`, `--help`    | display help for command                               |
+| `-V`, `--version` | output the version number                              |
 
 ## Contributing
