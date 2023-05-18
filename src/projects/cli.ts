@@ -9,7 +9,7 @@ import {
 	getTsconfigJsonContent
 } from '../files/cli/index.js';
 
-export async function createCliProject(dir: string, settings: Settings): Promise<void> {
+export function createCliProject(dir: string, settings: Settings): void {
 	dir = path.join(dir, `projects/${Archetype.cli}`);
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);

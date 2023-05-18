@@ -1,4 +1,5 @@
 import { Archetype, Settings } from '../../types.js';
+import { stringify } from '../../utils.js';
 
 export function getPackageJsonContent(settings: Settings): string {
 	const packageJson = {
@@ -7,5 +8,5 @@ export function getPackageJsonContent(settings: Settings): string {
 		types: 'url.d.ts',
 		files: ['tailwind.config.cjs', 'postcss.config.cjs', 'index.ts', 'url.ts']
 	};
-	return JSON.stringify(packageJson, null, 2) + '\n';
+	return stringify(packageJson);
 }

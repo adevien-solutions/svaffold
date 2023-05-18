@@ -1,5 +1,5 @@
 import { Archetype, Settings } from '../../types.js';
-import { getPackageVersion } from '../../utils.js';
+import { getPackageVersion, stringify } from '../../utils.js';
 
 export function getPackageJsonContent(settings: Settings): string {
 	const packageJson = {
@@ -27,5 +27,5 @@ export function getPackageJsonContent(settings: Settings): string {
 			typescript: '^5.0.4'
 		}
 	};
-	return JSON.stringify(packageJson, null, 2) + '\n';
+	return stringify(packageJson);
 }

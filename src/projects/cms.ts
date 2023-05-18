@@ -4,9 +4,9 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileS
 import { Archetype, Settings } from '../types.js';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
-import { getStdioSetting, replaceInFile } from '../utils.js';
+import { getStdioSetting, replaceInFile, stringify } from '../utils.js';
 
-export async function createCmsProject(dir: string, settings: Settings): Promise<void> {
+export function createCmsProject(dir: string, settings: Settings): void {
 	const { client } = settings;
 	const root = dir;
 	dir = path.join(dir, 'projects');
@@ -31,7 +31,7 @@ You can change this by updating ${chalk.green('MONGODB_URI')} in ${chalk.green(
 		packageJson.scripts['preview'] = packageJson.scripts.serve;
 		delete packageJson.scripts.serve;
 		delete packageJson.description;
-		writeFileSync(`${Archetype.cms}/package.json`, JSON.stringify(packageJson, null, 2) + '\n');
+		writeFileSync(`${Archetype.cms}/package.json`, stringify(packageJson));
 		writeFileSync(`${Archetype.cms}/README.md`, `# @${client}/${Archetype.cms}\n`);
 		replaceInFile(`${Archetype.cms}/Dockerfile`, '3000', '80', true);
 		replaceInFile(`${Archetype.cms}/docker-compose.yml`, '3000', '80', true);

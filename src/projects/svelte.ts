@@ -63,4 +63,4 @@ export async function createSvelteProject(
 	process.exit();
 }
 
-createSvelteProject(argv[2] as Archetype, argv[3], JSON.parse(argv[4]));
+await createSvelteProject(argv[2] as Archetype, argv[3], JSON.parse(argv[4]));

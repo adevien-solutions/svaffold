@@ -110,13 +110,29 @@ export class Generator {
 
 	private async _installDependencies(): Promise<void> {
 		Announcer.info('Installing dependencies (this might take a while)');
-		return new Promise<void>((resolve) => {
+		// run preinstall adders like "histoire"
+		await new Promise((resolve) => {
 			const proc = spawn('pnpm', ['install'], {
 				cwd: this.dir,
 				stdio: getStdioSetting(this.settings)
 			});
 			proc.once('exit', resolve);
 		});
+		await this._runPostInstallAdders();
+	}
+
+	private async _runPostInstallAdders(): Promise<void[]> {
+		const promises: Promise<void>[] = [
+			new Promise<void>((resolve) => {
+				const proc = fork(path.join(getDirName(import.meta.url), './adders/lib-builder.js'), [
+					this.dir,
+					JSON.stringify(this.settings)
+				]);
+				proc.on('message', (message) => Announcer.addDelayedMessage(message.toString()));
+				proc.once('exit', resolve);
+			})
+		];
+		return await Promise.all(promises);
 	}
 
 	private async _initializeGit(): Promise<void> {

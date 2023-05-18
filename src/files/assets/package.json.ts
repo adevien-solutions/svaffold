@@ -1,4 +1,5 @@
 import { Archetype, Settings } from '../../types.js';
+import { stringify } from '../../utils.js';
 
 export function getPackageJsonContent(settings: Settings): string {
 	const packageJson = {
@@ -13,5 +14,5 @@ export function getPackageJsonContent(settings: Settings): string {
 			express: '^4.18.2'
 		}
 	};
-	return JSON.stringify(packageJson, null, 2) + '\n';
+	return stringify(packageJson);
 }

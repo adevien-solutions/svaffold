@@ -48,9 +48,18 @@ function getScriptTypes(type: Archetype, settings: Settings): ScriptType[] {
 		return ['dev', 'check', 'test', 'build', 'preview'];
 	}
 	if (SVELTE_APPS.find((app) => app.value === type)) {
-		return settings.svelteDeploy === 'docker'
-			? [...SCRIPT_TYPES]
-			: SCRIPT_TYPES.filter((s) => !s.startsWith('docker-'));
+		if (settings.svelteDeploy === 'docker') {
+			if (type === Archetype.lib) {
+				return [...SCRIPT_TYPES];
+			}
+			return SCRIPT_TYPES.filter((s) => !s.startsWith('story-'));
+		} else {
+			const filtered = SCRIPT_TYPES.filter((s) => !s.startsWith('docker-'));
+			if (type === Archetype.lib) {
+				return [...filtered];
+			}
+			return filtered.filter((s) => !s.startsWith('story-'));
+		}
 	}
 	return ['dev', 'test', 'build'];
 }
@@ -80,6 +89,18 @@ function getScriptString(script: ScriptType, settings: Settings, type?: Archetyp
 		preview: {
 			general: `turbo run preview --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
 			scoped: `turbo run preview --filter=@${client}/${type}`
+		},
+		'story-dev': {
+			general: '',
+			scoped: `turbo run story:dev --filter=${client}/${type}`
+		},
+		'story-build': {
+			general: '',
+			scoped: `turbo run story:build --filter=${client}/${type}`
+		},
+		'story-preview': {
+			general: '',
+			scoped: `turbo run story:preview --filter=${client}/${type}`
 		},
 		'docker-build': {
 			general: '',

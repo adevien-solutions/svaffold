@@ -1,15 +1,22 @@
 import { readFileSync } from 'fs';
 import { APP_DEV_URLS } from '../../constants.js';
 import { Archetype, Settings } from '../../types.js';
-import { getPackageVersion, replaceInFile } from '../../utils.js';
+import { getPackageVersion, replaceInFile, stringify } from '../../utils.js';
 
 export async function getPackageJsonContent(settings: Settings, type: Archetype): Promise<string> {
 	const { client } = settings;
 	const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'));
 	packageJson.name = `@${client}/${type}`;
 	packageJson.devDependencies[`@${client}/${Archetype.config}`] = 'workspace:*';
-	if (settings.archetypes.includes(Archetype.lib)) {
+	if (type !== Archetype.lib && settings.archetypes.includes(Archetype.lib)) {
 		packageJson.devDependencies[`@${client}/${Archetype.lib}`] = 'workspace:*';
+	}
+	if (
+		type === Archetype.lib &&
+		settings.libBuilder === 'storybook' &&
+		packageJson.scripts['story:dev']
+	) {
+		packageJson.scripts['story:dev'] += ' --disable-telemetry';
 	}
 	if (settings.designSystem === 'skeleton') {
 		const name = '@skeletonlabs/skeleton';
@@ -28,5 +35,5 @@ export async function getPackageJsonContent(settings: Settings, type: Archetype)
 		packageJson.scripts.dev = `vite dev --open --port ${port}`;
 	}
 
-	return JSON.stringify(packageJson, null, 2) + '\n';
+	return stringify(packageJson);
 }

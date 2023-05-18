@@ -27,7 +27,7 @@ export type Settings = {
 	};
 	archetypes: Archetype[];
 	designSystem?: (typeof CHOICES.designSystem)[number]['value'];
-	libBuilder?: (typeof CHOICES.designSystem)[number]['value'];
+	libBuilder?: (typeof CHOICES.libBuilder)[number]['value'];
 	svelteDeploy?: (typeof CHOICES.svelteDeploy)[number]['value'];
 	cms?: (typeof CHOICES.cms)[number]['value'];
 	assetDeploy?: (typeof CHOICES.assetDeploy)[number]['value'];

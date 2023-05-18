@@ -16,11 +16,11 @@ export const CHOICES = {
 		}
 	],
 	libBuilder: [
+		{
+			name: 'Storybook',
+			value: 'storybook'
+		},
 		// TODO
-		// {
-		// 	name: 'Storybook',
-		// 	value: 'storybook'
-		// },
 		// {
 		// 	name: 'Histoire',
 		// 	value: 'histoire'
@@ -149,6 +149,9 @@ export const SCRIPT_TYPES = [
 	'test',
 	'build',
 	'preview',
+	'story-dev',
+	'story-build',
+	'story-preview',
 	'docker-build',
 	'docker-preview'
 ] as const;

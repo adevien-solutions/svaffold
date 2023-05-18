@@ -9,7 +9,7 @@ import {
 	getUrlTsContent
 } from '../files/config/index.js';
 
-export async function createConfigProject(dir: string, settings: Settings): Promise<void> {
+export function createConfigProject(dir: string, settings: Settings): void {
 	dir = path.join(dir, `shared/${Archetype.config}`);
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);

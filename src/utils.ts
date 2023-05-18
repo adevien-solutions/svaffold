@@ -142,3 +142,7 @@ export function getDirName(url: string): string {
 export function getStdioSetting(settings: Settings): StdioOptions {
 	return settings.options.verbose ? 'inherit' : 'ignore';
 }
+
+export function stringify(obj: Record<string, unknown>): string {
+	return JSON.stringify(obj, null, 2) + '\n';
+}
