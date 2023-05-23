@@ -39,6 +39,7 @@ export class Generator {
 	async init(): Promise<Generator> {
 		await this._createFiles();
 		await this._installDependencies();
+		await this._synSvelteProjects();
 		await this._initializeGit();
 		Announcer.finish();
 		return this;
@@ -111,7 +112,7 @@ export class Generator {
 
 	private async _installDependencies(): Promise<void> {
 		Announcer.info('Installing dependencies (this might take a while)');
-		// run preinstall adders like "histoire"
+		// TODO: run preinstall adders like "histoire"
 		await new Promise((resolve) => {
 			const proc = spawn('pnpm', ['install'], {
 				cwd: this.dir,
@@ -123,9 +124,21 @@ export class Generator {
 	}
 
 	private async _runPostInstallAdders(): Promise<void[]> {
-		const promises: Promise<void>[] = [
+		const promises = [
 			createProcessForkPromise('./adders/lib-builder.js', [this.dir, JSON.stringify(this.settings)])
 		];
+		return await Promise.all(promises);
+	}
+
+	private async _synSvelteProjects(): Promise<void[] | void> {
+		const apps = this.settings.archetypes.filter(isSvelteType);
+		if (apps.length === 0) {
+			return;
+		}
+		Announcer.info('Syncing Svelte projects');
+		const promises = apps.map((type) => {
+			return createProcessForkPromise('./adders/svelte-sync.js', [type, this.dir]);
+		});
 		return await Promise.all(promises);
 	}
 
