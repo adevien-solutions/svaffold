@@ -54,7 +54,7 @@ You can select the following deployment methods:
 
 In case you select "Component library", you can choose between the following story builders:
 
-- [ ] Storybook
+- [x] Storybook
 - [ ] Histoire
 - [x] None
 
