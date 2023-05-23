@@ -4,7 +4,8 @@ import { SVELTE_APPS, OTHER_APPS, CHOICES, PACKAGE_VERSION_URLS } from './consta
 import { readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { StdioOptions } from 'child_process';
+import { StdioOptions, fork } from 'child_process';
+import { Announcer } from './announcer.js';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
 	const answers = await inquirer.prompt<Settings>([
@@ -145,4 +146,24 @@ export function getStdioSetting(settings: Settings): StdioOptions {
 
 export function stringify(obj: Record<string, unknown>): string {
 	return JSON.stringify(obj, null, 2) + '\n';
+}
+
+export function updateLocalPackageJson(
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	modifier: (packageJson: Record<string, any>) => void
+): void {
+	const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'));
+	modifier(packageJson);
+	writeFileSync('./package.json', stringify(packageJson));
+}
+
+export function createProcessForkPromise(
+	relativeFilePath: string,
+	args: string[] = []
+): Promise<void> {
+	return new Promise<void>((resolve) => {
+		const proc = fork(path.join(getDirName(import.meta.url), relativeFilePath), args);
+		proc.on('message', (message) => Announcer.addDelayedMessage(message.toString()));
+		proc.once('exit', resolve);
+	});
 }

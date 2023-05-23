@@ -1,9 +1,9 @@
 import path from 'path';
 import { argv } from 'process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import { Archetype, Settings } from '../types.js';
 import { execSync } from 'child_process';
-import { stringify } from '../utils.js';
+import { updateLocalPackageJson } from '../utils.js';
 
 export async function addLibBuilder(dir: string, settings: Settings): Promise<void> {
 	if (!settings.libBuilder || settings.libBuilder === 'none') {
@@ -13,18 +13,21 @@ export async function addLibBuilder(dir: string, settings: Settings): Promise<vo
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
 
-	const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'));
-	let isUpdated = false;
-
 	if (settings.libBuilder === 'storybook') {
-		execSync('npx storybook@latest init --type sveltekit --yes');
-		if (packageJson.scripts['story:dev']) {
-			packageJson.scripts['story:dev'] += ' --disable-telemetry';
-			isUpdated = true;
-		}
+		execSync('npx storybook@latest init --type sveltekit --package-manager=pnpm --yes');
+		updateLocalPackageJson((json) => {
+			const dev = json.scripts.storybook || 'storybook dev -p 6006';
+			const build = json.scripts['build-storybook'] || 'storybook build';
+
+			json.scripts['story:dev'] = dev + ' --disable-telemetry';
+			json.scripts['story:build'] = build + ' --disable-telemetry';
+			json.scripts['story:preview'] = 'npx serve storybook-static';
+
+			delete json.scripts.storybook;
+			delete json.scripts['build-storybook'];
+		});
 	}
 
-	isUpdated && writeFileSync('package.json', stringify(packageJson));
 	process.exit();
 }
 

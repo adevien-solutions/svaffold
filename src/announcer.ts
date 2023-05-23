@@ -13,7 +13,7 @@ export class Announcer {
 		if (this._nextMessageNumber === 2) {
 			console.log('\n');
 		}
-		const text = chalk.blue.bold(message);
+		const text = chalk.blue.bold(message) + '\n';
 		if (spinner) {
 			this._lastOraInstance = ora({ text, spinner: spinners.squareCorners, color: 'blue' }).start();
 		} else {

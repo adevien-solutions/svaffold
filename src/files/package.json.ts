@@ -4,6 +4,8 @@ import { getPackageVersion } from '../utils.js';
 
 export async function getPackageJsonContent(settings: Settings): Promise<string> {
 	const { client } = settings;
+
+	// Using template literal so I have control over the whitespace
 	return `{
 	"name": "@${client}/monorepo",
 	"version": "0.0.1",
@@ -19,7 +21,11 @@ export async function getPackageJsonContent(settings: Settings): Promise<string>
 				general = `"${script}": "${general}",`;
 			}
 			typeScripts.forEach((type) => {
-				const scriptString = `"${script}:${type}": "${getScriptString(script, settings, type)}",`;
+				const scoped = getScriptString(script, settings, type);
+				if (!scoped) {
+					return;
+				}
+				const scriptString = `"${script}:${type}": "${scoped}",`;
 				general += general ? `\n\t\t${scriptString}` : scriptString;
 			});
 			return general;
@@ -83,24 +89,24 @@ function getScriptString(script: ScriptType, settings: Settings, type?: Archetyp
 			scoped: `turbo run test --filter=@${client}/${type}`
 		},
 		build: {
-			general: `turbo run build --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
-			scoped: `turbo run build --filter=@${client}/${type}`
+			general: `dotenv -- turbo run build --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
+			scoped: `dotenv -- turbo run build --filter=@${client}/${type}`
 		},
 		preview: {
 			general: `turbo run preview --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
 			scoped: `turbo run preview --filter=@${client}/${type}`
 		},
 		'story-dev': {
-			general: '',
-			scoped: `turbo run story:dev --filter=${client}/${type}`
+			general: `turbo run story:dev --filter=@${client}/${Archetype.lib}`,
+			scoped: ''
 		},
 		'story-build': {
-			general: '',
-			scoped: `turbo run story:build --filter=${client}/${type}`
+			general: `turbo run story:build --filter=@${client}/${Archetype.lib}`,
+			scoped: ''
 		},
 		'story-preview': {
-			general: '',
-			scoped: `turbo run story:preview --filter=${client}/${type}`
+			general: `turbo run story:preview --filter=@${client}/${Archetype.lib}`,
+			scoped: ''
 		},
 		'docker-build': {
 			general: '',

@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { fork, spawn } from 'child_process';
+import { spawn } from 'child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import path from 'path';
 import { Announcer } from './announcer.js';
@@ -16,7 +16,12 @@ import {
 } from './files/index.js';
 import { getPublishSvelteYmlContent, getAssetsSyncYmlContent } from './files/workflows/index.js';
 import { AllSettings, Archetype, Settings } from './types.js';
-import { getDirName, getStdioSetting, isRepoOnGitHub, isSvelteType } from './utils.js';
+import {
+	createProcessForkPromise,
+	getStdioSetting,
+	isRepoOnGitHub,
+	isSvelteType
+} from './utils.js';
 
 export class Generator {
 	/** Root where the CLI got called */
@@ -60,7 +65,7 @@ export class Generator {
 			'package.json': await getPackageJsonContent(this.settings),
 			'pnpm-workspace.yaml': getPnpmWorkspaceYamlContent(this.settings),
 			'README.md': getReadmeMdContent(this.settings),
-			'turbo.json': getTurboJsonContent()
+			'turbo.json': getTurboJsonContent(this.settings)
 		};
 		Object.entries(files).forEach(([path, content]) => this._checkAndWriteFile(path, content));
 		process.chdir(root);
@@ -99,11 +104,7 @@ export class Generator {
 				file = `./projects/${type}.js`;
 				args = [this.dir, JSON.stringify(this.settings)];
 			}
-			return new Promise<void>((resolve) => {
-				const proc = fork(path.join(getDirName(import.meta.url), file), args);
-				proc.on('message', (message) => Announcer.addDelayedMessage(message.toString()));
-				proc.once('exit', resolve);
-			});
+			return createProcessForkPromise(file, args);
 		});
 		return await Promise.all(promises);
 	}
@@ -123,14 +124,7 @@ export class Generator {
 
 	private async _runPostInstallAdders(): Promise<void[]> {
 		const promises: Promise<void>[] = [
-			new Promise<void>((resolve) => {
-				const proc = fork(path.join(getDirName(import.meta.url), './adders/lib-builder.js'), [
-					this.dir,
-					JSON.stringify(this.settings)
-				]);
-				proc.on('message', (message) => Announcer.addDelayedMessage(message.toString()));
-				proc.once('exit', resolve);
-			})
+			createProcessForkPromise('./adders/lib-builder.js', [this.dir, JSON.stringify(this.settings)])
 		];
 		return await Promise.all(promises);
 	}
