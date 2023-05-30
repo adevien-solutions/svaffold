@@ -1,8 +1,8 @@
 {
 	"name": "@adevien/svelte-scaffold",
-	"version": "1.1.0",
+	"version": "1.1.2",
 	"description": "Scaffold a monorepo to collect projects of a new client",
-	"main": "index.js",
+	"main": "./index.js",
 	"scripts": {
 		"lint": "eslint src",
 		"build": "npx tsc && cp package.json dist/package.json && cp README.md dist/README.md",
@@ -21,7 +21,7 @@
 		"monorepo"
 	],
 	"author": "adam-kov",
-	"license": "ISC",
+	"license": "MIT",
 	"type": "module",
 	"bugs": {
 		"url": "https://github.com/adevien-solutions/svelte-scaffold/issues"
