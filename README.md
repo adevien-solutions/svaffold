@@ -82,7 +82,7 @@ _(A GitHub Workflow will be created to sync the assets with your bucket)_
 ## Usage
 
 ```bash
-npx @adevien/svelte-scaffold@latest root-dir
+npx svaffold@latest root-dir
 ```
 
 **Arguments:**

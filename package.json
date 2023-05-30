@@ -1,16 +1,16 @@
 {
-	"name": "@adevien/svelte-scaffold",
-	"version": "1.2.0",
-	"description": "Scaffold a monorepo to collect projects of a new client",
+	"name": "svaffold",
+	"version": "2.0.1",
+	"description": "Scaffold a monorepo to collect Svelte and TypeScript projects",
 	"main": "./index.js",
 	"scripts": {
 		"lint": "eslint src",
-		"build": "npx tsc && cp package.json dist/package.json && cp README.md dist/README.md",
+		"build": "npx tsc && cp package.json dist/package.json && cp README.md dist/README.md && cp LICENSE dist/LICENSE",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"update-local": "npm uninstall -g @adevien/svelte-scaffold && npm run build && (cd dist && npm i -g)"
+		"update-local": "npm uninstall -g svaffold && npm run build && (cd dist && npm i -g)"
 	},
 	"bin": {
-		"svelte-scaffold": "./index.js"
+		"svaffold": "./index.js"
 	},
 	"repository": {
 		"type": "git",

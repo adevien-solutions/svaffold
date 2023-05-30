@@ -10,7 +10,7 @@ const program = new Command();
 
 program
 	.version(VERSION_NUMBER)
-	.usage('npx @adevien/svelte-scaffold [options]')
+	.usage('npx svaffold [options]')
 	.description(
 		chalk.bold(
 			`Monorepo scaffolding for ${chalk.hex('#ff3e00')('Svelte')} and ${chalk.hex('#2f73bf')(
