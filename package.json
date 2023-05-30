@@ -1,6 +1,6 @@
 {
 	"name": "@adevien/svelte-scaffold",
-	"version": "1.1.2",
+	"version": "1.2.0",
 	"description": "Scaffold a monorepo to collect projects of a new client",
 	"main": "./index.js",
 	"scripts": {
