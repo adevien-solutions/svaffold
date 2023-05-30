@@ -127,22 +127,6 @@ export const APP_DEV_URLS = {
 	[Archetype.assets]: new URL('http://localhost:8000')
 } as const;
 
-export const PACKAGE_VERSION_URLS = {
-	'@skeletonlabs/skeleton':
-		'https://raw.githubusercontent.com/skeletonlabs/skeleton/dev/package.json',
-	'@sveltejs/adapter-cloudflare':
-		'https://raw.githubusercontent.com/sveltejs/kit/master/packages/adapter-cloudflare/package.json',
-	'@sveltejs/adapter-vercel':
-		'https://raw.githubusercontent.com/sveltejs/kit/master/packages/adapter-vercel/package.json',
-	'@sveltejs/adapter-node':
-		'https://raw.githubusercontent.com/sveltejs/kit/master/packages/adapter-node/package.json',
-	turbo: 'https://raw.githubusercontent.com/vercel/turbo/main/packages/turbo/package.json',
-	'dotenv-cli': 'https://raw.githubusercontent.com/entropitor/dotenv-cli/master/package.json',
-	'@clack/prompt':
-		'https://raw.githubusercontent.com/natemoo-re/clack/main/packages/prompts/package.json',
-	kleur: 'https://raw.githubusercontent.com/lukeed/kleur/master/package.json'
-} as const;
-
 export const SCRIPT_TYPES = [
 	'dev',
 	'check',

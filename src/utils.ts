@@ -1,10 +1,10 @@
 import inquirer from 'inquirer';
 import { Archetype, Settings } from './types.js';
-import { SVELTE_APPS, OTHER_APPS, CHOICES, PACKAGE_VERSION_URLS } from './constants.js';
+import { SVELTE_APPS, OTHER_APPS, CHOICES } from './constants.js';
 import { readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { StdioOptions, fork } from 'child_process';
+import { StdioOptions, execSync, fork } from 'child_process';
 import { Announcer } from './announcer.js';
 
 export async function getSettings(options: Settings['options']): Promise<Settings> {
@@ -112,17 +112,8 @@ export function replaceInFile(
 	writeFileSync(path, file[all ? 'replaceAll' : 'replace'](replaceFrom, replaceTo));
 }
 
-export async function getPackageVersion(name: keyof typeof PACKAGE_VERSION_URLS): Promise<string> {
-	let { version }: { version: string } = await (await fetch(PACKAGE_VERSION_URLS[name])).json();
-	if (version.includes('-canary')) {
-		const index = version.indexOf('-');
-		const sliced = version.slice(0, index).split('.');
-		const last = sliced.length - 1;
-		sliced[last] = (+sliced[last] - 1).toString();
-		sliced.join('.');
-		version = sliced.join('.');
-	}
-	version.replace('v', '');
+export async function getPackageVersion(name: string): Promise<string> {
+	const version = execSync(`npm view ${name} version`).toString().trim();
 	return '^' + version;
 }
 
