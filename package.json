@@ -1,9 +1,10 @@
 {
 	"name": "svaffold",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Scaffold a monorepo to collect Svelte and TypeScript projects",
 	"main": "./index.js",
 	"scripts": {
+		"start": "node index.js",
 		"lint": "eslint src",
 		"build": "npx tsc && cp package.json dist/package.json && cp README.md dist/README.md && cp LICENSE dist/LICENSE",
 		"test": "echo \"Error: no test specified\" && exit 1",
