@@ -1,6 +1,6 @@
-# Adevien - Svelte Scaffold
+# Adevien - Svaffold
 
-Scaffold a monorepo to collect projects of a new client.
+Scaffold a monorepo to collect Svelte and TypeScript projects.
 
 ⚠️ **Warning** ⚠️ This is a highly opinionated tool, but PRs are welcome to make it more
 generalised. Refer to [Contributing](#contributing) for more information.
