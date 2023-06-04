@@ -1,6 +1,6 @@
 {
 	"name": "svaffold",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Scaffold a monorepo to collect Svelte and TypeScript projects",
 	"main": "./index.js",
 	"scripts": {
@@ -10,9 +10,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"update-local": "npm uninstall -g svaffold && npm run build && (cd dist && npm i -g)"
 	},
-	"bin": {
-		"svaffold": "./index.js"
-	},
+	"bin": "./index.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/adevien-solutions/svelte-scaffold.git"
