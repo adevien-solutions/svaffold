@@ -1,13 +1,13 @@
 {
 	"name": "svaffold",
-	"version": "2.0.5",
+	"version": "2.0.6",
 	"description": "Scaffold a monorepo to collect Svelte and TypeScript projects",
 	"main": "./index.js",
 	"scripts": {
 		"start": "node index.js",
 		"lint": "eslint src",
 		"build": "npx tsc && cp package.json ./dist/package.json && cp README.md ./dist/README.md && cp LICENSE ./dist/LICENSE",
-		"publish": "npm publish ./dist --access public",
+		"release": "npm publish ./dist --access public",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"update-local": "npm uninstall -g svaffold && npm run build && (cd ./dist && npm i -g)"
 	},
