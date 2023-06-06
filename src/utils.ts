@@ -158,3 +158,7 @@ export function createProcessForkPromise(
 		proc.once('exit', resolve);
 	});
 }
+
+export function isWindows(): boolean {
+	return /^win/.test(process.platform);
+}
