@@ -1,4 +1,4 @@
-# Adevien - Svaffold
+# Svaffold
 
 Scaffold a monorepo to collect Svelte and TypeScript projects.
 
