@@ -21,6 +21,12 @@ export class Announcer {
 		}
 	}
 
+	static error(message: string): void {
+		this.stopSpinner();
+		const text = '\n' + chalk.red.bold(message) + '\n';
+		console.log(text);
+	}
+
 	/** Add messages which will be displayed when the `finish` method is called. */
 	static addDelayedMessage(message: string): void {
 		this._delayedMessages.add(message);

@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { spawn } from 'child_process';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, rmSync, writeFileSync } from 'fs';
 import path from 'path';
 import { Announcer } from './announcer.js';
 import {
@@ -37,12 +37,17 @@ export class Generator {
 	}
 
 	async init(): Promise<Generator> {
-		await this._createFiles();
-		await this._installDependencies();
-		await this._synSvelteProjects();
-		await this._initializeGit();
-		Announcer.finish();
-		return this;
+		try {
+			await this._createFiles();
+			await this._installDependencies();
+			await this._synSvelteProjects();
+			await this._initializeGit();
+			Announcer.finish();
+			return this;
+		} catch (error: unknown) {
+			this._cleanUpAfterError(error);
+			return this;
+		}
 	}
 
 	private async _createFiles(): Promise<void> {
@@ -168,5 +173,16 @@ export class Generator {
 		} else {
 			writeFileSync(path, content);
 		}
+	}
+
+	private _cleanUpAfterError(error: unknown): void {
+		rmSync(this.dir, { recursive: true });
+		const message = `An error occurred during the scaffolding. The created files are cleaned up.
+
+
+The original error message was:
+
+${error instanceof Error ? error.message : String(error)}}`;
+		Announcer.error(message);
 	}
 }
