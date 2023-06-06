@@ -20,8 +20,7 @@ import {
 	createProcessForkPromise,
 	getStdioSetting,
 	isRepoOnGitHub,
-	isSvelteType,
-	isWindows
+	isSvelteType
 } from './utils.js';
 
 export class Generator {
@@ -120,8 +119,9 @@ export class Generator {
 		Announcer.info('Installing dependencies (this might take a few minutes)');
 		// TODO: run preinstall adders like "histoire"
 		await new Promise((resolve) => {
-			const proc = spawn(isWindows() ? 'pnpm.cmd' : 'pnpm', ['install'], {
+			const proc = spawn('pnpm', ['install'], {
 				cwd: this.dir,
+				shell: true,
 				stdio: getStdioSetting(this.settings)
 			});
 			proc.once('exit', resolve);
