@@ -1,5 +1,10 @@
 import { CHOICES, SCRIPT_TYPES } from './constants.js';
 
+export enum Subfolder {
+	projects = 'projects',
+	shared = 'shared'
+}
+
 export enum Archetype {
 	landing = 'landing',
 	blog = 'blog',

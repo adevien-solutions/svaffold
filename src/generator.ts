@@ -104,6 +104,7 @@ export class Generator {
 			let file = '';
 			let args: string[] = [];
 			if (isSvelteType(type)) {
+				// This refers to the local source file, it's not a generated one
 				file = `./projects/svelte.js`;
 				args = [type, this.dir, JSON.stringify(this.settings)];
 			} else {

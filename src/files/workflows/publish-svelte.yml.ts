@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import { Announcer } from '../../announcer.js';
-import { Archetype, AllSettings } from '../../types.js';
+import { Archetype, AllSettings, Subfolder } from '../../types.js';
 
 export function getPublishSvelteYmlContent(settings: AllSettings, type: Archetype): string {
 	if (settings.svelteDeploy !== 'cloudflare') {
@@ -30,7 +30,7 @@ on:
     branches:
       - main
     paths:
-      - 'projects/${type}/**'
+      - '${Subfolder.projects}/${type}/**'
 
 jobs:
   publish:

@@ -1,4 +1,4 @@
-import { Archetype, Settings } from '../../types.js';
+import { Archetype, Settings, Subfolder } from '../../types.js';
 
 export function getTailwindConfigCjsContent(settings: Settings): string {
 	const plugins: string[] = [];
@@ -15,7 +15,7 @@ module.exports = {
 	darkMode: 'class',
 	content: [
 		'./src/**/*.{html,js,svelte,ts}',
-		'../../shared/${Archetype.lib}/src/**/*.{html,js,svelte,ts,svx}'${
+		'../../${Subfolder.shared}/${Archetype.lib}/src/**/*.{html,js,svelte,ts,svx}'${
 		settings.designSystem === 'skeleton'
 			? `,
 		require('path').join(require.resolve(

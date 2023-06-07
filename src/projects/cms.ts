@@ -1,7 +1,7 @@
 import path from 'path';
 import { argv } from 'process';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs';
-import { Archetype, Settings } from '../types.js';
+import { Archetype, Settings, Subfolder } from '../types.js';
 import { execSync } from 'child_process';
 import chalk from 'chalk';
 import { getStdioSetting, replaceInFile, stringify } from '../utils.js';
@@ -9,7 +9,7 @@ import { getStdioSetting, replaceInFile, stringify } from '../utils.js';
 export function createCmsProject(dir: string, settings: Settings): void {
 	const { client } = settings;
 	const root = dir;
-	dir = path.join(dir, 'projects');
+	dir = path.join(dir, Subfolder.projects);
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
 

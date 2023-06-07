@@ -1,4 +1,4 @@
-import { Settings } from '../types.js';
+import { Settings, Subfolder } from '../types.js';
 import { isRepoOnGitHub, isSharedType } from '../utils.js';
 
 export function getReadmeMdContent(settings: Settings): string {
@@ -11,13 +11,13 @@ export function getReadmeMdContent(settings: Settings): string {
 ${settings.archetypes
 	.filter((type) => !isSharedType(type))
 	.map((type) => {
-		return `- \`projects/${type}\``;
+		return `- \`${Subfolder.projects}/${type}\``;
 	})
 	.join('\n')}
 ${settings.archetypes
 	.filter(isSharedType)
 	.map((type) => {
-		return `- \`shared/${type}\``;
+		return `- \`${Subfolder.shared}/${type}\``;
 	})
 	.join('\n')}
 

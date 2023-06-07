@@ -1,7 +1,7 @@
 import path from 'path';
 import { argv } from 'process';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { Archetype, Settings } from '../types.js';
+import { Archetype, Settings, Subfolder } from '../types.js';
 import {
 	getEslintrcCjsContent,
 	getIndexTsContent,
@@ -10,7 +10,7 @@ import {
 } from '../files/cli/index.js';
 
 export function createCliProject(dir: string, settings: Settings): void {
-	dir = path.join(dir, `projects/${Archetype.cli}`);
+	dir = path.join(dir, Subfolder.projects, Archetype.cli);
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
 

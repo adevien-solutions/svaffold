@@ -2,7 +2,7 @@ import path from 'path';
 import { argv } from 'process';
 import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
 import { create } from 'create-svelte';
-import { Archetype, Settings } from '../types.js';
+import { Archetype, Settings, Subfolder } from '../types.js';
 import { execSync } from 'child_process';
 import { isSharedType, replaceInFile } from '../utils.js';
 import {
@@ -17,7 +17,7 @@ export async function createSvelteProject(
 	settings: Settings
 ): Promise<void> {
 	const { client } = settings;
-	dir = path.join(dir, `${isSharedType(type) ? 'shared' : 'projects'}/${type}`);
+	dir = path.join(dir, Subfolder[isSharedType(type) ? 'shared' : 'projects'], type);
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
 

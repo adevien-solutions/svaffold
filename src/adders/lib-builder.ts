@@ -1,7 +1,7 @@
 import path from 'path';
 import { argv } from 'process';
 import { existsSync, mkdirSync } from 'fs';
-import { Archetype, Settings } from '../types.js';
+import { Archetype, Settings, Subfolder } from '../types.js';
 import { execSync } from 'child_process';
 import { updateLocalPackageJson } from '../utils.js';
 
@@ -9,7 +9,7 @@ export async function addLibBuilder(dir: string, settings: Settings): Promise<vo
 	if (!settings.libBuilder || settings.libBuilder === 'none') {
 		process.exit();
 	}
-	dir = path.join(dir, `shared/${Archetype.lib}`);
+	dir = path.join(dir, Subfolder.shared, Archetype.lib);
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
 

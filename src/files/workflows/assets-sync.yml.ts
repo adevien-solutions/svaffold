@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { Announcer } from '../../announcer.js';
-import { Archetype, Settings } from '../../types.js';
+import { Archetype, Settings, Subfolder } from '../../types.js';
 
 export function getAssetsSyncYmlContent(settings: Settings): string {
 	const { client } = settings;
@@ -18,7 +18,7 @@ on:
     branches:
       - main
     paths:
-      - "projects/${Archetype.assets}/static/**"
+      - "${Subfolder.projects}/${Archetype.assets}/static/**"
 
 jobs:
   deploy:
@@ -34,6 +34,6 @@ jobs:
         env:
           GCP_SERVICE_ACCOUNT_KEY_FILE: \${{ secrets.GCP_SERVICE_ACCOUNT_KEY_FILE }}
           GCP_STORAGE_BUCKET: \${{ secrets.GCP_STORAGE_BUCKET }}
-          SOURCE_DIR: "projects/${Archetype.assets}/static"
+          SOURCE_DIR: "${Subfolder.projects}/${Archetype.assets}/static"
 `;
 }

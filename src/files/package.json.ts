@@ -1,5 +1,5 @@
 import { SCRIPT_TYPES, SVELTE_APPS } from '../constants.js';
-import { Archetype, ScriptType, Settings } from '../types.js';
+import { Archetype, ScriptType, Settings, Subfolder } from '../types.js';
 import { getPackageVersion } from '../utils.js';
 
 export async function getPackageJsonContent(settings: Settings): Promise<string> {
@@ -75,25 +75,25 @@ function getScriptString(script: ScriptType, settings: Settings, type?: Archetyp
 	const hasAssets = settings.archetypes.includes(Archetype.assets);
 	const scripts: Record<ScriptType, { general: string; scoped: string }> = {
 		dev: {
-			general: `dotenv -- turbo run dev --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
+			general: `dotenv -- turbo run dev --parallel --filter=./${Subfolder.projects}/** --filter=@${client}/${Archetype.lib}`,
 			scoped: `dotenv -- turbo run dev${
 				hasAssets ? ` --parallel --filter=@${client}/${Archetype.assets}` : ''
 			} --filter=@${client}/${type}`
 		},
 		check: {
-			general: `turbo run check --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
+			general: `turbo run check --parallel --filter=./${Subfolder.projects}/** --filter=@${client}/${Archetype.lib}`,
 			scoped: `turbo run check --filter=@${client}/${type}`
 		},
 		test: {
-			general: `turbo run test --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
+			general: `turbo run test --parallel --filter=./${Subfolder.projects}/** --filter=@${client}/${Archetype.lib}`,
 			scoped: `turbo run test --filter=@${client}/${type}`
 		},
 		build: {
-			general: `dotenv -- turbo run build --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
+			general: `dotenv -- turbo run build --parallel --filter=./${Subfolder.projects}/** --filter=@${client}/${Archetype.lib}`,
 			scoped: `dotenv -- turbo run build --filter=@${client}/${type}`
 		},
 		preview: {
-			general: `turbo run preview --parallel --filter=./projects/** --filter=@${client}/${Archetype.lib}`,
+			general: `turbo run preview --parallel --filter=./${Subfolder.projects}/** --filter=@${client}/${Archetype.lib}`,
 			scoped: `turbo run preview --filter=@${client}/${type}`
 		},
 		'story-dev': {

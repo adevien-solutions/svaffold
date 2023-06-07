@@ -1,7 +1,7 @@
 import path from 'path';
 import { argv } from 'process';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { Archetype, Settings } from '../types.js';
+import { Archetype, Settings, Subfolder } from '../types.js';
 import {
 	getPackageJsonContent,
 	getPostcssConfigCjsContent,
@@ -10,7 +10,7 @@ import {
 } from '../files/config/index.js';
 
 export function createConfigProject(dir: string, settings: Settings): void {
-	dir = path.join(dir, `shared/${Archetype.config}`);
+	dir = path.join(dir, Subfolder.shared, Archetype.config);
 	existsSync(dir) || mkdirSync(dir, { recursive: true });
 	process.chdir(dir);
 

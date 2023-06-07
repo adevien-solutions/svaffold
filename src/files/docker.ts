@@ -1,3 +1,5 @@
+import { Subfolder } from '../types';
+
 export function getDockerfileContent(): string {
 	return `FROM node:16.17-alpine AS builder
 
@@ -9,8 +11,8 @@ RUN npm install -g pnpm@7.18.1
 # Setup workspace
 WORKDIR /client
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json .dockerignore .gitignore .npmrc ./
-COPY ./shared ./shared
-COPY ./projects/$project ./projects/$project
+COPY ./${Subfolder.shared} ./${Subfolder.shared}
+COPY ./${Subfolder.projects}/$project ./${Subfolder.projects}/$project
 RUN pnpm install --frozen-lockfile
 
 # Turborepo fails to run build on alpine without this
