@@ -22,6 +22,10 @@ export async function getPackageJsonContent(settings: Settings, type: Archetype)
 		const name = '@skeletonlabs/skeleton';
 		packageJson.devDependencies[name] = await getPackageVersion(name);
 	}
+	if (settings.designSystem === 'daisy') {
+		const name = 'daisyui';
+		packageJson.devDependencies[name] = await getPackageVersion(name);
+	}
 	if (settings.svelteDeploy && settings.svelteDeploy !== 'auto') {
 		const adapter = settings.svelteDeploy === 'docker' ? 'node' : settings.svelteDeploy;
 		const name: Parameters<typeof getPackageVersion>[0] = `@sveltejs/adapter-${adapter}`;

@@ -7,7 +7,7 @@ export function getTailwindConfigCjsContent(settings: Settings): string {
 	} else if (settings.designSystem === 'daisy') {
 		plugins.push("require('daisyui')");
 	} else {
-		plugins.push("require('@tailwindcss/typography')", "require('@tailwindcss/forms')");
+		plugins.push("require('@tailwindcss/typography')");
 	}
 
 	return `/** @type {import('tailwindcss').Config} */

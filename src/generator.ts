@@ -43,7 +43,7 @@ export class Generator {
 		try {
 			await this._createFiles();
 			await this._installDependencies();
-			await this._synSvelteProjects();
+			// await this._synSvelteProjects();
 			await this._initializeGit();
 			Announcer.finish();
 			return this;

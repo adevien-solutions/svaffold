@@ -1,15 +1,15 @@
+import { execSync } from 'child_process';
+import { create } from 'create-svelte';
+import { existsSync, mkdirSync, rmSync, writeFileSync } from 'fs';
 import path from 'path';
 import { argv } from 'process';
-import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
-import { create } from 'create-svelte';
-import { Archetype, Settings, Subfolder } from '../types.js';
-import { execSync } from 'child_process';
-import { isSharedType, replaceInFile } from '../utils.js';
 import {
 	getPackageJsonContent,
 	getPostcssConfigCjsContent,
 	getTailwindConfigCjsContent
 } from '../files/svelte/index.js';
+import { Archetype, Settings, Subfolder } from '../types.js';
+import { isSharedType, replaceInFile } from '../utils.js';
 
 export async function createSvelteProject(
 	type: Archetype,
@@ -33,9 +33,8 @@ export async function createSvelteProject(
 	});
 
 	writeFileSync('package.json', await getPackageJsonContent(settings, type));
-	const daisy = settings.designSystem === 'daisy' ? ' --daisyui' : '';
-	const plugins = settings.designSystem === 'none' ? ' --forms --typography' : '';
-	execSync(`npx svelte-add@latest tailwindcss${daisy}${plugins}`);
+	const plugins = settings.designSystem === 'none' ? ' --typography' : '';
+	execSync(`npx svelte-add@latest tailwindcss${plugins}`);
 	writeFileSync('tailwind.config.cjs', getTailwindConfigCjsContent(settings));
 	writeFileSync('postcss.config.cjs', getPostcssConfigCjsContent(settings));
 	writeFileSync('README.md', `# @${client}/${type}\n`);
