@@ -101,3 +101,10 @@ npx svaffold@latest root-dir
 | `-V`, `--version` | output the version number                              |
 
 ## Contributing
+
+All contributions are welcome, especially ones that make the tool more robust and generalised. To
+get started:
+
+1. `git clone https://github.com/adevien-solutions/svaffold.git`
+1. `cd svaffold`
+1. `npm i`

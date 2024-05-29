@@ -1,6 +1,6 @@
 {
 	"name": "svaffold",
-	"version": "2.1.1",
+	"version": "3.0.0",
 	"description": "Scaffold a monorepo to collect Svelte and TypeScript projects",
 	"main": "./index.js",
 	"scripts": {
@@ -14,7 +14,7 @@
 	"bin": "./index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/adevien-solutions/svelte-scaffold.git"
+		"url": "git+https://github.com/adevien-solutions/svaffold.git"
 	},
 	"keywords": [
 		"svelte",
@@ -26,17 +26,17 @@
 	"license": "MIT",
 	"type": "module",
 	"bugs": {
-		"url": "https://github.com/adevien-solutions/svelte-scaffold/issues"
+		"url": "https://github.com/adevien-solutions/svaffold/issues"
 	},
-	"homepage": "https://github.com/adevien-solutions/svelte-scaffold#readme",
+	"homepage": "https://github.com/adevien-solutions/svaffold#readme",
 	"dependencies": {
 		"chalk": "^5.2.0",
 		"cli-spinners": "^2.9.0",
 		"commander": "^10.0.1",
-		"create-svelte": "^4.2.0",
+		"create-svelte": "^6.3.0",
 		"inquirer": "^9.2.2",
 		"ora": "^6.3.0",
-		"svelte-add": "^2023.5.4-0.0"
+		"svelte-add": "^2.0.10"
 	},
 	"devDependencies": {
 		"@types/inquirer": "^9.0.3",
