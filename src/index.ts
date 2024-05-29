@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander';
 import chalk from 'chalk';
-import { getSettings } from './utils.js';
+import { Command } from 'commander';
 import { Generator } from './generator.js';
+import { getSettings } from './utils.js';
 
-const VERSION_NUMBER = '1.0.7';
+const VERSION_NUMBER = '3.0.0';
 const program = new Command();
 
 program

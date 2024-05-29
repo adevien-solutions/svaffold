@@ -1,4 +1,4 @@
-import { Subfolder } from '../types';
+import { Subfolder } from '../types.js';
 
 export function getDockerfileContent(): string {
 	return `FROM node:16.17-alpine AS builder

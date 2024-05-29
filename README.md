@@ -108,3 +108,8 @@ get started:
 1. `git clone https://github.com/adevien-solutions/svaffold.git`
 1. `cd svaffold`
 1. `npm i`
+
+### Test locally
+
+1. `npm run update-local`
+1. `svaffold <dir>`
