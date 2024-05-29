@@ -4,17 +4,17 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from 'fs';
 import path from 'path';
 import { Announcer } from './announcer.js';
 import {
-	getGitignoreContent,
-	getPrettierignoreContent,
-	getPrettierrcContent,
 	getDockerfileContent,
+	getDockerignoreContent,
+	getGitignoreContent,
 	getPackageJsonContent,
 	getPnpmWorkspaceYamlContent,
+	getPrettierignoreContent,
+	getPrettierrcContent,
 	getReadmeMdContent,
-	getTurboJsonContent,
-	getDockerignoreContent
+	getTurboJsonContent
 } from './files/index.js';
-import { getPublishSvelteYmlContent, getAssetsSyncYmlContent } from './files/workflows/index.js';
+import { getAssetsSyncYmlContent, getPublishSvelteYmlContent } from './files/workflows/index.js';
 import { AllSettings, Archetype, Settings } from './types.js';
 import {
 	createProcessForkPromise,
@@ -34,6 +34,9 @@ export class Generator {
 		this.root = process.cwd();
 		this.dir = path.join(this.root, path.normalize(dir));
 		this.settings = { ...settings, dir: this.dir, root: this.root };
+		if (isRepoOnGitHub(this.settings.repoUrl) && !this.settings.repoUrl.endsWith('.git')) {
+			this.settings.repoUrl = `${this.settings.repoUrl}.git`;
+		}
 	}
 
 	async init(): Promise<Generator> {
